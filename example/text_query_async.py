@@ -6,6 +6,6 @@ def callback(response):
 
 if __name__ == "__main__":
 	wit.init()
-	wit.text_query_async("show me madonna", "ACCESS_TOKEN", callback)
+	wit.text_query_async("turn on the lights in the kitchen", "ACCESS_TOKEN", callback)
 	time.sleep(5)
 	wit.close()

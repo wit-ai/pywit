@@ -34,7 +34,7 @@ static PyObject *pywit_text_query(PyObject *self, PyObject *args)
 		return NULL;
 	res = wit_text_query(context, text, access_token);
 	PyObject *obj = Py_BuildValue("s", res);
-	free(res);
+	Py_XDECREF(res);
 	return obj;
 }
 
@@ -60,7 +60,7 @@ static PyObject *pywit_voice_query_stop()
 	}
 	res = wit_voice_query_stop(context);
 	PyObject *obj = Py_BuildValue("s", res);
-	free(res);
+	Py_XDECREF(res);
 	return obj;
 }
 
@@ -76,7 +76,7 @@ static PyObject *pywit_voice_query_auto(PyObject *self, PyObject *args)
 		return NULL;
 	res = wit_voice_query_auto(context, access_token);
 	PyObject *obj = Py_BuildValue("s", res);
-	free(res);
+	Py_XDECREF(res);
 	return obj;
 }
 
