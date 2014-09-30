@@ -78,7 +78,7 @@ static PyObject *saved_py_cb = NULL;
 
 PyGILState_STATE state;
 
-void my_wit_resp_callback(const char *res) {
+void my_wit_resp_callback(char *res) {
 	PyObject *result;
 	state = PyGILState_Ensure();
 	PyObject *args = Py_BuildValue("(s)", res);

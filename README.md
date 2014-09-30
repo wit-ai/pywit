@@ -2,12 +2,11 @@
 
 `pywit` is the Python SDK for [Wit.AI](http://wit.ai).
 
-Requires [libwit](http://github.com/wit-ai/libwit).
-Tested on Mac OS X 64 bits, running Python 2.7.8 from the official [64-bit/32-bit x86-64/i386 Installer](http://www.python.org/download).
+Requires libsox (`apt-get install libsox2` on Debian, `brew install sox` on OS X)
 
 ## Installation instructions
 
-Install [libwit](http://github.com/wit-ai/libwit) and copy `libwit.a` into the `lib` directory.
+Make sure you have the latest version of Python 2.7 installed (note for OS X users: you can install it via Homebrew using `brew install python`. The version currently shipped with OS X is too old).
 
 Run the following commands into the main directory (where `setup.py` and `pywit.c` are located):
 ```bash
