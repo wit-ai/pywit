@@ -25,7 +25,7 @@ static PyObject *pywit_text_query(PyObject *self, PyObject *args)
 {
 	const char *text;
 	const char *access_token;
-	const char *res;
+	char *res;
 	if (context == NULL) {
 		PyErr_SetString(WitError, "Wit context uninitialized (did you call wit.init()?)");
 		return NULL;
@@ -33,7 +33,9 @@ static PyObject *pywit_text_query(PyObject *self, PyObject *args)
 	if (!PyArg_ParseTuple(args, "ss", &text, &access_token))
 		return NULL;
 	res = wit_text_query(context, text, access_token);
-	return Py_BuildValue("s", res);
+	PyObject *obj = Py_BuildValue("s", res);
+	free(res);
+	return obj;
 }
 
 static PyObject *pywit_voice_query_start(PyObject *self, PyObject *args)
@@ -51,19 +53,21 @@ static PyObject *pywit_voice_query_start(PyObject *self, PyObject *args)
 
 static PyObject *pywit_voice_query_stop()
 {
-	const char *res;
+	char *res;
 	if (context == NULL) {
 		PyErr_SetString(WitError, "Wit context uninitialized (did you call wit.init()?)");
 		return NULL;
 	}
 	res = wit_voice_query_stop(context);
-	return Py_BuildValue("s", res);
+	PyObject *obj = Py_BuildValue("s", res);
+	free(res);
+	return obj;
 }
 
 static PyObject *pywit_voice_query_auto(PyObject *self, PyObject *args)
 {
 	const char *access_token;
-	const char *res;
+	char *res;
 	if (context == NULL) {
 		PyErr_SetString(WitError, "Wit context uninitialized (did you call wit.init()?)");
 		return NULL;
@@ -71,7 +75,9 @@ static PyObject *pywit_voice_query_auto(PyObject *self, PyObject *args)
 	if (!PyArg_ParseTuple(args, "s", &access_token))
 		return NULL;
 	res = wit_voice_query_auto(context, access_token);
-	return Py_BuildValue("s", res);
+	PyObject *obj = Py_BuildValue("s", res);
+	free(res);
+	return obj;
 }
 
 static PyObject *saved_py_cb = NULL;
