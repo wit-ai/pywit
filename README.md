@@ -4,11 +4,13 @@
 
 ## Prerequisites
 
-This package requires libsox (`sudo apt-get install libsox2` on Debian, `brew install sox` on OS X)
+This package requires:
 
-You also need a recent enough version of Python 2.7:
-* for OS X users: you can install it via Homebrew using `brew install python`. The version currently shipped with OS X is too old
-* for Linux users: make sure the python dev files are installed (`sudo apt-get install python-dev` on Debian)
+* libsox (`sudo apt-get install libsox2` on Debian, `brew install sox` on OS X)
+* a recent enough version of Python 2.7:
+    * for OS X users: you can install it via Homebrew using `brew install python`. The version currently shipped with OS X is too old
+    * for Linux users: make sure the python dev files are installed (`sudo apt-get install python-dev` on Debian)
+* [Cargo](http://crates.io/)
 
 ## Installation instructions
 
