@@ -14,6 +14,14 @@ This package requires:
 
 ## Installation instructions
 
+### Using pip
+
+```bash
+pip install git+https://github.com/wit-ai/pywit.git
+```
+
+### Regular way
+
 Run the following commands into the main directory (where `setup.py` and `pywit.c` are located):
 ```bash
 python setup.py build
