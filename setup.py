@@ -9,22 +9,22 @@ import shutil
 class build(_build):
     def run(self):
         if not find_executable("cargo"):
-            print "Building pywit requires cargo. See installation instructions at http://crates.io/"
+            print("Building pywit requires cargo. See installation instructions at http://crates.io/")
             return
         if not os.path.isdir("libwit"):
-            print "Cloning libwit repository..."
+            print("Cloning libwit repository...")
             if call(["git", "clone", "https://github.com/wit-ai/libwit"]):
-                print "[error] could not clone libwit repository, aborting."
+                print("[error] could not clone libwit repository, aborting.")
                 return
         else:
-            print "Updating libwit repository..."
+            print("Updating libwit repository...")
             if call(["git", "pull"], cwd="libwit"):
-                print "[error] could not update libwit repository, aborting."
+                print("[error] could not update libwit repository, aborting.")
                 return
         if not os.path.isfile("libwit/lib/libwit.a"):
-            print "Compiling libwit..."
+            print("Compiling libwit...")
             if call(["./build_c.sh"], shell=True, cwd="libwit"):
-                print "[error] could not build libwit, aborting."
+                print("[error] could not build libwit, aborting.")
                 return
         _build.run(self)
 
@@ -41,7 +41,7 @@ wit = Extension(
     libraries=['wit', 'sox', 'curl']
 )
 setup(
-    name='PyWit SDK',
+    name='PyWit',
     version='1.0',
     description='Wit SDK for Python',
     author='Julien Odent',
