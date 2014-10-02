@@ -11,14 +11,16 @@ static PyObject *pywit_init(PyObject *self, PyObject *args)
 	if (!PyArg_ParseTuple(args, "|s", &device_opt))
 		return NULL;
 	context = wit_init(device_opt);
-	return Py_BuildValue("i", 0);
+	Py_INCREF(Py_None);
+	return Py_None;
 }
 
 static PyObject *pywit_close()
 {
 	if (context != NULL)
 		wit_close(context);
-	return Py_BuildValue("i", 0);
+	Py_INCREF(Py_None);
+	return Py_None;
 }
 
 static PyObject *pywit_text_query(PyObject *self, PyObject *args)
@@ -48,7 +50,8 @@ static PyObject *pywit_voice_query_start(PyObject *self, PyObject *args)
 	if (!PyArg_ParseTuple(args, "s", &access_token))
 		return NULL;
 	wit_voice_query_start(context, access_token);
-	return Py_BuildValue("i", 0);
+	Py_INCREF(Py_None);
+	return Py_None;
 }
 
 static PyObject *pywit_voice_query_stop()
