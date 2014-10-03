@@ -10,7 +10,7 @@ static PyObject *pywit_init(PyObject *self, PyObject *args)
 	const char *device_opt = NULL;
 	if (!PyArg_ParseTuple(args, "|s", &device_opt))
 		return NULL;
-	context = wit_init(device_opt);
+	context = wit_init(device_opt, 4);
 	Py_INCREF(Py_None);
 	return Py_None;
 }
