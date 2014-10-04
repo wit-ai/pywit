@@ -17,7 +17,7 @@ This package requires:
 ### Using pip
 
 ```bash
-pip install wit
+pip install git+https://github.com/wit-ai/pywit.git
 ```
 
 ### Regular way
