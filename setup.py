@@ -3,35 +3,28 @@ from distutils.command.build import build as _build
 from distutils.command.clean import clean as _clean
 from distutils.spawn import find_executable
 from subprocess import call
+from platform import platform
 import os
 import shutil
 
 class build(_build):
     def run(self):
-        if not find_executable("cargo"):
-            print("Building pywit requires cargo. See installation instructions at http://crates.io/")
-            return
-        if not os.path.isdir("libwit"):
-            print("Cloning libwit repository...")
-            if call(["git", "clone", "https://github.com/wit-ai/libwit"]):
-                print("[error] could not clone libwit repository, aborting.")
-                return
-        else:
-            print("Updating libwit repository...")
-            if call(["git", "pull"], cwd="libwit"):
-                print("[error] could not update libwit repository, aborting.")
-                return
-        if not os.path.isfile("libwit/lib/libwit.a"):
-            print("Compiling libwit...")
-            if call(["./build_c.sh"], shell=True, cwd="libwit"):
-                print("[error] could not build libwit, aborting.")
-                return
+	LIBWIT_FILE = None
+	arch = platform().lower()
+	if "arm" in arch:
+		LIBWIT_FILE = "libwit-armv6.a"
+	elif "64" in arch:
+		if "darwin" in arch:
+			LIBWIT_FILE = "libwit-64-darwin.a"
+		else:
+			LIBWIT_FILE = "libwit-64-linux.a"
+	else:
+		LIBWIT_FILE = "libwit-32-linux.a"
+	print("Retrieving platform-specific libwit library... {}".format(LIBWIT_FILE))
+	if call(["curl", "-o", "libwit.a", "/".join(["https://raw.githubusercontent.com/wit-ai/libwit/master/releases", LIBWIT_FILE])], cwd="libwit/lib"):
+		print("[error] unable to retrieve libwit")
+		return
         _build.run(self)
-
-class clean(_clean):
-    def run(self):
-        call(["./clean_c.sh"], shell=True, cwd="libwit")
-        _clean.run(self)
 
 wit = Extension(
     'wit',
@@ -41,7 +34,7 @@ wit = Extension(
     libraries=['wit', 'sox', 'curl']
 )
 setup(
-    name='PyWit',
+    name='wit',
     version='1.0',
     description='Wit SDK for Python',
     author='Julien Odent',
@@ -50,6 +43,5 @@ setup(
     ext_modules=[wit],
     cmdclass={
         'build': build,
-        'clean': clean,
     }
 )
