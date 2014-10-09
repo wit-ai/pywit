@@ -1,4 +1,4 @@
-# Wit Python SDK
+# Wit Python SDK [![Latest Version](https://pypip.in/version/wit/badge.png)](https://pypi.python.org/pypi/wit)
 
 `pywit` is the Python SDK for [Wit.AI](http://wit.ai).
 
