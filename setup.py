@@ -21,17 +21,24 @@ class build(_build):
 	else:
 		LIBWIT_FILE = "libwit-32-linux.a"
 	print("Retrieving platform-specific libwit library... {}".format(LIBWIT_FILE))
-	if call(["curl", "-o", "libwit.a", "/".join(["https://raw.githubusercontent.com/wit-ai/libwit/master/releases", LIBWIT_FILE])], cwd="libwit/lib"):
+	if call(["curl", "-L", "-o", "libwit.a", "/".join(["https://github.com/wit-ai/libwit/releases/download/1.1.0", LIBWIT_FILE])], cwd="libwit/lib"):
 		print("[error] unable to retrieve libwit")
 		return
         _build.run(self)
+
+def libraries():
+    arch = platform().lower()
+    if "darwin" in arch:
+        return ['wit', 'ssl', 'crypto', 'z', 'sox', 'System', 'pthread', 'c', 'm']
+    else:
+        return ['rt', 'sox', 'ssl', 'crypto', 'dl', 'pthread', 'rt', 'gcc_s', 'pthread', 'c', 'm']
 
 wit = Extension(
     'wit',
     include_dirs=['libwit/include'],
     library_dirs=['libwit/lib'],
     sources=['pywit.c'],
-    libraries=['wit', 'sox', 'curl']
+    libraries=libraries()
 )
 setup(
     name='wit',
