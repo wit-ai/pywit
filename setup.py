@@ -31,7 +31,7 @@ def libraries():
     if "darwin" in arch:
         return ['wit', 'ssl', 'crypto', 'z', 'sox', 'System', 'pthread', 'c', 'm']
     else:
-        return ['rt', 'sox', 'ssl', 'crypto', 'dl', 'pthread', 'rt', 'gcc_s', 'pthread', 'c', 'm']
+        return ['wit', 'rt', 'sox', 'ssl', 'crypto', 'dl', 'pthread', 'rt', 'gcc_s', 'pthread', 'c', 'm']
 
 wit = Extension(
     'wit',
