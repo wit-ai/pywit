@@ -21,7 +21,7 @@ class build(_build):
 	else:
 		LIBWIT_FILE = "libwit-32-linux.a"
 	print("Retrieving platform-specific libwit library... {}".format(LIBWIT_FILE))
-	if call(["curl", "-L", "-o", "libwit.a", "/".join(["https://github.com/wit-ai/libwit/releases/download/1.1.0", LIBWIT_FILE])], cwd="libwit/lib"):
+	if call(["curl", "-L", "-o", "libwit.a", "/".join(["https://github.com/wit-ai/libwit/releases/download/1.1.1", LIBWIT_FILE])], cwd="libwit/lib"):
 		print("[error] unable to retrieve libwit")
 		return
         _build.run(self)
