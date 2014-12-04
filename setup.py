@@ -52,8 +52,7 @@ wit = Extension(
     include_dirs=['libwit/include'],
     library_dirs=['libwit/lib'],
     sources=['pywit.c'],
-    libraries=libraries(),
-    extra_link_args=['-static']
+    libraries=libraries()
 )
 setup(
     name='wit',
