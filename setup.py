@@ -11,6 +11,8 @@ LIBWIT_NAME = "libwit.a"
 LIBWIT_PATH = os.path.join("libwit", "lib", LIBWIT_NAME)
 
 def fetch_libwit():
+    if not os.path.exists("libwit/lib"):
+      os.makedirs("libwit/lib")
     LIBWIT_FILE = None
     arch = platform().lower()
     if "arm" in arch:
@@ -56,7 +58,7 @@ wit = Extension(
 )
 setup(
     name='wit',
-    version='1.0',
+    version='1.1',
     description='Wit SDK for Python',
     author='Julien Odent',
     author_email='julien@wit.ai',
@@ -65,5 +67,6 @@ setup(
     cmdclass={
         'build': build,
         'clean': clean
-    }
+    },
+    data_files=[('', ['libwit/include/wit.h', 'libwit/lib/libwit.a'])]
 )
