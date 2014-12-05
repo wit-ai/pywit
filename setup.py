@@ -23,7 +23,7 @@ def fetch_libwit():
     else:
         LIBWIT_FILE = "libwit-32-linux.a"
     print("Retrieving platform-specific libwit library... {}".format(LIBWIT_FILE))
-    if call(["curl", "-L", "-o", LIBWIT_NAME, "/".join(["https://github.com/wit-ai/libwit/releases/download/1.1.2", LIBWIT_FILE])], cwd="libwit/lib"):
+    if call(["curl", "-L", "-Ss", "-o", LIBWIT_NAME, "/".join(["https://github.com/wit-ai/libwit/releases/download/1.1.2", LIBWIT_FILE])], cwd="libwit/lib"):
         raise Exception("unable to retrieve libwit")
 
 class build(_build):
@@ -60,10 +60,10 @@ setup(
     description='Wit SDK for Python',
     author='Julien Odent',
     author_email='julien@wit.ai',
-    url='http://wit.ai',
+    url='http://github.com/wit-ai/pywit',
     ext_modules=[wit],
     cmdclass={
         'build': build,
-        'clean': clean,
+        'clean': clean
     }
 )
