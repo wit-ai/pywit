@@ -177,14 +177,35 @@ static PyMethodDef WitMethods[] = {
 	{NULL, NULL, 0, NULL}
 };
 
-PyMODINIT_FUNC initwit(void)
+#if PY_MAJOR_VERSION >= 3
+    static struct PyModuleDef WitModule = {
+        PyModuleDef_HEAD_INIT,
+        "wit",
+        "Wit Python SDK",
+        -1,
+        WitMethods
+    };
+#endif
+
+#if PY_MAJOR_VERSION >= 3
+    PyMODINIT_FUNC PyInit_wit(void)
+#else
+    PyMODINIT_FUNC initwit(void)
+#endif
 {
-	PyObject *m;
-	m = Py_InitModule("wit", WitMethods);
-	if (m == NULL)
-		return;
-	WitError = PyErr_NewException("wit.error", NULL, NULL);
-	Py_INCREF(WitError);
-	PyModule_AddObject(m, "error", WitError);
-	PyEval_InitThreads();
+    PyObject *m;
+    #if PY_MAJOR_VERSION >= 3
+        m = PyModule_Create(&WitModule);
+    #else
+        m = Py_InitModule("wit", WitMethods);
+    #endif
+    if (m == NULL)
+        return NULL;
+    WitError = PyErr_NewException("wit.error", NULL, NULL);
+    Py_INCREF(WitError);
+    PyModule_AddObject(m, "error", WitError);
+    PyEval_InitThreads();
+    #if PY_MAJOR_VERSION >= 3
+        return m;
+    #endif
 }
