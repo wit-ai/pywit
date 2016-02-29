@@ -1,6 +1,7 @@
 from distutils.core import setup, Extension
 from distutils.command.build import build as _build
 from distutils.command.clean import clean as _clean
+from distutils.errors import CompileError
 from distutils.spawn import find_executable
 from subprocess import call
 from platform import platform
@@ -24,15 +25,27 @@ def fetch_libwit():
             LIBWIT_FILE = "libwit-64-linux.a"
     else:
         LIBWIT_FILE = "libwit-32-linux.a"
-    print("Retrieving platform-specific libwit library... {}".format(LIBWIT_FILE))
-    if call(["curl", "-L", "-Ss", "-o", LIBWIT_NAME, "/".join(["https://github.com/wit-ai/libwit/releases/download/1.1.2", LIBWIT_FILE])], cwd="libwit/lib"):
-        raise Exception("unable to retrieve libwit")
+    print("Retrieving platform-specific libwit library... {0}".format(LIBWIT_FILE))
+    try:
+        if call(["curl", "-L", "-Ss", "-o", LIBWIT_NAME, "/".join(["https://github.com/wit-ai/libwit/releases/download/1.1.2", LIBWIT_FILE])], cwd="libwit/lib") != 0:
+            raise Exception("Unable to retrieve libwit.")
+    except OSError as exc:
+        raise Exception("Could not find curl. Please install curl and retry.")
+    except Exception as exc:
+        raise Exception("Unable to retrieve libwit: {0}".format(exc))
 
 class build(_build):
     def run(self):
         if not os.path.isfile(LIBWIT_PATH):
             fetch_libwit()
-        _build.run(self)
+        try:
+            _build.run(self)
+        except CompileError as exc:
+            print("")
+            print("Compilation failed. Do you have all dependencies installed?")
+            print("    On Debian/Ubuntu  try: sudo apt-get install python-dev python-pip curl libcurl4-openssl-dev libsox-dev")
+            print("    On RHEL/Centos    try: sudo yum install python-devel python-pip curl sox-devel openssl-devel")
+            print("    On OS X           try: brew install curl python sox")
 
 class clean(_clean):
     def run(self):
