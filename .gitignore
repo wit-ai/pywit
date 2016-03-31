@@ -1,3 +1,6 @@
-build/
-lib/*
-dist/
+/build/
+/dist/
+*.pyc
+*.egg-info
+*.swo
+*.swp
