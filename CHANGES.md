@@ -1,6 +1,6 @@
 ## v2.0
 
-Rewrite in pure Python and integrate the Bot API
+Rewrite in pure Python
 
 ### breaking
 
