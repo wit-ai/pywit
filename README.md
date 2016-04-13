@@ -1,38 +1,29 @@
 # pywit
 
-`pywit` is a Python client to easily use the [Wit.ai](http://wit.ai) HTTP API.
+`pywit` is the Python SDK for [Wit.ai](http://wit.ai).
 
 ## Install
 
+Using `pip`:
 ```bash
 pip install wit
 ```
 
-## Usage
-
-```python
-import wit
-print(wit.message('MY_ACCESS_TOKEN', 'turn on the lights in the kitchen'))
-```
-
-See below for more examples.
-
-## Install from source
-
+From source:
 ```bash
 git clone https://github.com/wit-ai/pywit
 python setup.py install
 ```
 
+## Usage
+
+See the `examples` folder for examples.
+
 ## API
 
-```python
-import wit
+`pywit` provides a Wit class with the following methods:
+* `message` - the Wit message API
+* `converse` - the low-level Wit converse API
+* `run_actions` - a higher-level method to the Wit converse API
 
-if __name__ == '__main__':
-	access_token = 'MY_ACCESS_TOKEN'
-
-  # GET /message to extract intent and entities from user request
-	response = wit.message('turn on the lights in the kitchen', access_token)
-	print('/message -> {}'.format(response))
-```
+See the [docs](https://wit.ai/docs) for more information.

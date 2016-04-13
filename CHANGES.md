@@ -1,3 +1,11 @@
+## v3.0
+
+Bot Engine integration
+
+### breaking
+
+- the `message` API is wrapped around a `Wit` class, and doesn't take the token as first parameter
+
 ## v2.0
 
 Rewrite in pure Python

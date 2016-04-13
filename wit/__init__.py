@@ -1,3 +1,1 @@
-from wit import (
-    message
-)
+from wit import Wit
