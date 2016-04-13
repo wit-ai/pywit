@@ -61,7 +61,7 @@ class Wit:
     if max_steps <= 0:
       raise WitError('max iterations reached')
     rst = self.converse(session_id, message, context)
-    if not rst['type']:
+    if 'type' not in rst:
       raise WitError('couldn\'t find type in Wit response')
     if rst['type'] == 'stop':
       return context
