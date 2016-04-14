@@ -68,7 +68,7 @@ class Wit:
         if rst['type'] == 'msg':
             if 'say' not in self.actions:
                 raise WitError('unknown action: say')
-                print('Executing say with: {}'.format(rst['msg']))
+            print('Executing say with: {}'.format(rst['msg']))
             self.actions['say'](session_id, rst['msg'])
         elif rst['type'] == 'merge':
             if 'merge' not in self.actions:
@@ -77,15 +77,15 @@ class Wit:
             context = self.actions['merge'](context, rst['entities'])
             if context is None:
                 print('WARN missing context - did you forget to return it?')
-            context = {}
+                context = {}
         elif rst['type'] == 'action':
             if rst['action'] not in self.actions:
                 raise WitError('unknown action: ' + rst['action'])
-                print('Executing action {}'.format(rst['action']))
+            print('Executing action {}'.format(rst['action']))
             context = self.actions[rst['action']](context)
             if context is None:
                 print('WARN missing context - did you forget to return it?')
-            context = {}
+                context = {}
         elif rst['type'] == 'error':
             if 'error' not in self.actions:
                 raise WitError('unknown action: error')
