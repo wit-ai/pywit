@@ -1,3 +1,14 @@
+## v3.2
+
+- Fixed request keyword arguments issue
+- Better error messages
+
+## v3.1
+
+- Added `examples/template.py`
+- Fixed missing type
+- Updated `examples/weather.py` to `examples/quickstart.py` to reflect the docs
+
 ## v3.0
 
 Bot Engine integration

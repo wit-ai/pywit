@@ -9,7 +9,7 @@ class WitError(Exception):
     pass
 
 
-def req(access_token, meth, path, params, payload=None):
+def req(access_token, meth, path, params, **kwargs):
     rsp = requests.request(
         meth,
         WIT_API_HOST + path,
@@ -18,9 +18,14 @@ def req(access_token, meth, path, params, payload=None):
             'accept': 'application/vnd.wit.20160330+json'
         },
         params=params,
-        json=payload,
+        **kwargs
     )
-    return rsp.json()
+    if rsp.status_code > 200:
+        raise Exception('Wit responded with status: ' + str(rsp.status_code) + ' (' + rsp.reason + ')')
+    json = rsp.json()
+    if 'error' in json:
+        raise WitError('Wit responded with an error: ' + json['error'])
+    return json
 
 
 def validate_actions(actions):
@@ -54,7 +59,7 @@ class Wit:
         params = {'session_id': session_id}
         if message:
             params['q'] = message
-        return req(self.access_token, 'POST', '/converse', params, context)
+        return req(self.access_token, 'POST', '/converse', params, json=context)
 
     def run_actions(self, session_id, message, context={},
                     max_steps=DEFAULT_MAX_STEPS):
