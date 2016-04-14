@@ -95,7 +95,7 @@ class Wit:
             if 'error' not in self.actions:
                 raise WitError('unknown action: error')
             print('Executing error')
-            self.actions['error'](session_id, message)
+            self.actions['error'](session_id, 'unknown action: error')
         else:
             raise WitError('unknown type: ' + rst['type'])
         return self.run_actions(session_id, None, context, max_steps - 1)

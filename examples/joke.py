@@ -25,7 +25,7 @@ all_jokes = {
         'Why do geeks mistake Halloween and Christmas? Because Oct 31 === Dec 25.',
     ],
     'default': [
-        'Why was the Math book sad? Because it had so many problems.'
+        'Why was the Math book sad? Because it had so many problems.',
     ],
 }
 
