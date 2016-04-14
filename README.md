@@ -92,9 +92,9 @@ Example:
 session_id = 'my-user-session-42'
 context0 = {}
 context1 = client.run_actions(session_id, 'what is the weather in London?', context0)
-print('The session state is now: ' + str(context1));
+print('The session state is now: ' + str(context1))
 context2 = client.run_actions(session_id, 'and in Brussels?', context1)
-print('The session state is now: ' + str(context2));
+print('The session state is now: ' + str(context2))
 ```
 
 ### converse
