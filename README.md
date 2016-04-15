@@ -42,10 +42,10 @@ A minimal `actions` dict looks like this:
 def say(session_id, msg):
     print(msg)
 
-def merge(context, entities):
+def merge(session_id, context, entities, msg):
     return context
 
-def error(session_id, msg):
+def error(session_id, context):
     print('Oops, I don\'t know what to do.')
 
 actions = {
@@ -55,7 +55,8 @@ actions = {
 }
 ```
 
-A custom action takes one parameter:
+A custom action takes the following parameters:
+* `session_id` - a unique identifier describing the user session
 * `context` - the dictionary representing the session state
 
 Example:
@@ -85,7 +86,7 @@ Takes the following parameters:
 * `session_id` - a unique identifier describing the user session
 * `message` - the text received from the user
 * `context` - the dict representing the session state
-* max_steps` - (optional) the maximum number of actions to execute (defaults to 5)
+* `max_steps` - (optional) the maximum number of actions to execute (defaults to 5)
 
 Example:
 ```python

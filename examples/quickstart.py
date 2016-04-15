@@ -19,7 +19,7 @@ def say(session_id, msg):
     print(msg)
 
 
-def merge(context, entities):
+def merge(session_id, context, entities, msg):
     new_context = dict(context)
     loc = first_entity_value(entities, 'location')
     if loc:
@@ -27,11 +27,11 @@ def merge(context, entities):
     return new_context
 
 
-def error(session_id, msg):
+def error(session_id, context):
     print('Oops, I don\'t know what to do.')
 
 
-def fetch_weather(context):
+def fetch_weather(session_id, context):
     new_context = dict(context)
     new_context['forecast'] = 'sunny'
     return new_context

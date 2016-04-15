@@ -21,7 +21,8 @@ def req(access_token, meth, path, params, **kwargs):
         **kwargs
     )
     if rsp.status_code > 200:
-        raise Exception('Wit responded with status: ' + str(rsp.status_code) + ' (' + rsp.reason + ')')
+        raise WitError('Wit responded with status: ' + str(rsp.status_code) +
+                       ' (' + rsp.reason + ')')
     json = rsp.json()
     if 'error' in json:
         raise WitError('Wit responded with an error: ' + json['error'])
@@ -34,10 +35,12 @@ def validate_actions(actions):
         raise WitError('The second parameter should be a dictionary.')
     for action in ['say', 'merge', 'error']:
         if action not in actions:
-            raise WitError('The \'' + action + '\' action is missing. ' + learn_more)
+            raise WitError('The \'' + action + '\' action is missing. ' +
+                           learn_more)
     for action in actions.keys():
         if not hasattr(actions[action], '__call__'):
-            raise TypeError('The \'' + action + '\' action should be a function.')
+            raise TypeError('The \'' + action +
+                            '\' action should be a function.')
     return actions
 
 
@@ -61,8 +64,8 @@ class Wit:
             params['q'] = message
         return req(self.access_token, 'POST', '/converse', params, json=context)
 
-    def run_actions(self, session_id, message, context={},
-                    max_steps=DEFAULT_MAX_STEPS):
+    def __run_actions(self, session_id, message, context, max_steps,
+                      user_message):
         if max_steps <= 0:
             raise WitError('max iterations reached')
         rst = self.converse(session_id, message, context)
@@ -79,7 +82,8 @@ class Wit:
             if 'merge' not in self.actions:
                 raise WitError('unknown action: merge')
             print('Executing merge')
-            context = self.actions['merge'](context, rst['entities'])
+            context = self.actions['merge'](session_id, context,
+                                            rst['entities'], user_message)
             if context is None:
                 print('WARN missing context - did you forget to return it?')
                 context = {}
@@ -87,7 +91,7 @@ class Wit:
             if rst['action'] not in self.actions:
                 raise WitError('unknown action: ' + rst['action'])
             print('Executing action {}'.format(rst['action']))
-            context = self.actions[rst['action']](context)
+            context = self.actions[rst['action']](session_id, context)
             if context is None:
                 print('WARN missing context - did you forget to return it?')
                 context = {}
@@ -95,7 +99,13 @@ class Wit:
             if 'error' not in self.actions:
                 raise WitError('unknown action: error')
             print('Executing error')
-            self.actions['error'](session_id, 'unknown action: error')
+            self.actions['error'](session_id, context)
         else:
             raise WitError('unknown type: ' + rst['type'])
-        return self.run_actions(session_id, None, context, max_steps - 1)
+        return self.__run_actions(session_id, None, context, max_steps - 1,
+                                  user_message)
+
+    def run_actions(self, session_id, message, context={},
+                    max_steps=DEFAULT_MAX_STEPS):
+        return self.__run_actions(session_id, message, context, max_steps,
+                                  message)

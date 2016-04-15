@@ -34,7 +34,7 @@ def say(session_id, msg):
     print(msg)
 
 
-def merge(context, entities):
+def merge(session_id, context, entities, msg):
     new_context = dict(context)
     if 'joke' in new_context:
         del new_context['joke']
@@ -49,11 +49,11 @@ def merge(context, entities):
     return new_context
 
 
-def error(session_id, msg):
+def error(session_id, context):
     print('Oops, I don\'t know what to do.')
 
 
-def select_joke(context):
+def select_joke(session_id, context):
     new_context = dict(context)
     jokes = all_jokes[new_context['cat'] or 'default']
     shuffle(jokes)

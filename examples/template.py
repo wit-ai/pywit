@@ -7,11 +7,11 @@ def say(session_id, msg):
     print(msg)
 
 
-def merge(context, entities):
+def merge(session_id, context, entities, msg):
     return context
 
 
-def error(session_id, msg):
+def error(session_id, context):
     print('Oops, I don\'t know what to do.')
 
 actions = {

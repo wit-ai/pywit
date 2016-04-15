@@ -1,3 +1,11 @@
+## v3.3.0
+
+### breaking
+
+- the `merge` action now takes 4 parameters: `session_id`, `context`, `entities`, `msg`
+- the `error` action now takes `context` as second parameter
+- custom actions now take 2 parameters: `session_id`, `context`
+
 ## v3.2
 
 - Fixed request keyword arguments issue
