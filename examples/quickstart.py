@@ -5,7 +5,6 @@ from wit import Wit
 
 access_token = 'YOUR_ACCESS_TOKEN'
 
-
 def first_entity_value(entities, entity):
     if entity not in entities:
         return None
@@ -14,27 +13,21 @@ def first_entity_value(entities, entity):
         return None
     return val['value'] if isinstance(val, dict) else val
 
-
 def say(session_id, msg):
     print(msg)
 
-
 def merge(session_id, context, entities, msg):
-    new_context = dict(context)
     loc = first_entity_value(entities, 'location')
     if loc:
-        new_context['loc'] = loc
-    return new_context
+        context['loc'] = loc
+    return context
 
-
-def error(session_id, context):
-    print('Oops, I don\'t know what to do.')
-
+def error(session_id, context, e):
+    print(str(e))
 
 def fetch_weather(session_id, context):
-    new_context = dict(context)
-    new_context['forecast'] = 'sunny'
-    return new_context
+    context['forecast'] = 'sunny'
+    return context
 
 actions = {
     'say': say,

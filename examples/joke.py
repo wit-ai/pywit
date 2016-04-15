@@ -6,7 +6,6 @@ from wit import Wit
 
 access_token = 'YOUR_ACCESS_TOKEN'
 
-
 def first_entity_value(entities, entity):
     if entity not in entities:
         return None
@@ -29,36 +28,30 @@ all_jokes = {
     ],
 }
 
-
-def say(session_id, msg):
+def say(session_id, context, msg):
     print(msg)
 
-
 def merge(session_id, context, entities, msg):
-    new_context = dict(context)
-    if 'joke' in new_context:
-        del new_context['joke']
+    if 'joke' in context:
+        del context['joke']
     category = first_entity_value(entities, 'category')
     if category:
-        new_context['cat'] = category
+        context['cat'] = category
     sentiment = first_entity_value(entities, 'sentiment')
     if sentiment:
-        new_context['ack'] = 'Glad you liked it.' if sentiment == 'positive' else 'Hmm.'
-    elif 'ack' in new_context:
-        del new_context['ack']
-    return new_context
+        context['ack'] = 'Glad you liked it.' if sentiment == 'positive' else 'Hmm.'
+    elif 'ack' in context:
+        del context['ack']
+    return context
 
-
-def error(session_id, context):
-    print('Oops, I don\'t know what to do.')
-
+def error(session_id, context, e):
+    print(str(e))
 
 def select_joke(session_id, context):
-    new_context = dict(context)
-    jokes = all_jokes[new_context['cat'] or 'default']
+    jokes = all_jokes[context['cat'] or 'default']
     shuffle(jokes)
-    new_context['joke'] = jokes[0]
-    return new_context
+    context['joke'] = jokes[0]
+    return context
 
 actions = {
     'say': say,

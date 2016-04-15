@@ -2,17 +2,14 @@ from wit import Wit
 
 access_token = 'YOUR_ACCESS_TOKEN'
 
-
-def say(session_id, msg):
+def say(session_id, context, msg):
     print(msg)
-
 
 def merge(session_id, context, entities, msg):
     return context
 
-
-def error(session_id, context):
-    print('Oops, I don\'t know what to do.')
+def error(session_id, context, e):
+    print(str(e))
 
 actions = {
     'say': say,

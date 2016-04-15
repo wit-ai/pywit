@@ -4,10 +4,8 @@ import os
 WIT_API_HOST = os.getenv('WIT_URL', 'https://api.wit.ai')
 DEFAULT_MAX_STEPS = 5
 
-
 class WitError(Exception):
     pass
-
 
 def req(access_token, meth, path, params, **kwargs):
     rsp = requests.request(
@@ -28,7 +26,6 @@ def req(access_token, meth, path, params, **kwargs):
         raise WitError('Wit responded with an error: ' + json['error'])
     return json
 
-
 def validate_actions(actions):
     learn_more = 'Learn more at https://wit.ai/docs/quickstart'
     if not isinstance(actions, dict):
@@ -42,7 +39,6 @@ def validate_actions(actions):
             raise TypeError('The \'' + action +
                             '\' action should be a function.')
     return actions
-
 
 class Wit:
     access_token = None
@@ -77,12 +73,12 @@ class Wit:
             if 'say' not in self.actions:
                 raise WitError('unknown action: say')
             print('Executing say with: {}'.format(rst['msg']))
-            self.actions['say'](session_id, rst['msg'])
+            self.actions['say'](session_id, dict(context), rst['msg'])
         elif rst['type'] == 'merge':
             if 'merge' not in self.actions:
                 raise WitError('unknown action: merge')
             print('Executing merge')
-            context = self.actions['merge'](session_id, context,
+            context = self.actions['merge'](session_id, dict(context),
                                             rst['entities'], user_message)
             if context is None:
                 print('WARN missing context - did you forget to return it?')
@@ -91,7 +87,7 @@ class Wit:
             if rst['action'] not in self.actions:
                 raise WitError('unknown action: ' + rst['action'])
             print('Executing action {}'.format(rst['action']))
-            context = self.actions[rst['action']](session_id, context)
+            context = self.actions[rst['action']](session_id, dict(context))
             if context is None:
                 print('WARN missing context - did you forget to return it?')
                 context = {}
@@ -99,7 +95,8 @@ class Wit:
             if 'error' not in self.actions:
                 raise WitError('unknown action: error')
             print('Executing error')
-            self.actions['error'](session_id, context)
+            self.actions['error'](session_id, dict(context),
+                                  WitError('Oops, I don\'t know what to do.'))
         else:
             raise WitError('unknown type: ' + rst['type'])
         return self.__run_actions(session_id, None, context, max_steps - 1,

@@ -1,4 +1,15 @@
+## v3.4.0
+
+Unifying action parameters
+
+### breaking
+
+- the `say` action now takes 3 parameters: `session_id`, `context`, `msg`
+- the `error` action now takes 3 parameters: `session_id`, `context`, `e`
+
 ## v3.3.0
+
+Updating action parameters
 
 ### breaking
 
