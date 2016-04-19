@@ -13,7 +13,7 @@ def first_entity_value(entities, entity):
         return None
     return val['value'] if isinstance(val, dict) else val
 
-def say(session_id, msg):
+def say(session_id, context, msg):
     print(msg)
 
 def merge(session_id, context, entities, msg):
