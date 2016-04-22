@@ -140,10 +140,6 @@ class Wit:
         input_function = raw_input
       except NameError:
         input_function = input
-      if sys.version_info >= (3, 0):
-          input_function = input
-      else:
-          input_function = raw_input
       # main interactive loop. prompt user, pass msg to run_actions, repeat
       while True:
         try:
