@@ -122,7 +122,7 @@ Starts an interactive conversation with your bot.
 
 Example:
 ```python
-client.interactive();
+client.interactive()
 ```
 
 See the [docs](https://wit.ai/docs) for more information.
