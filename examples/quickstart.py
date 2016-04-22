@@ -8,7 +8,7 @@ if len(sys.argv) != 2:
   print(sys.argv)
   print("usage: python examples/quickstart.py <wit-token>")
   exit(1)
-acess_token = sys.argv[1]
+access_token = sys.argv[1]
 
 def first_entity_value(entities, entity):
     if entity not in entities:

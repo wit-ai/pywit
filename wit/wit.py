@@ -136,6 +136,10 @@ class Wit:
       # generate type 1 uuid for the session id
       session_id = uuid.uuid1()
       # input/raw_input are not interchangible between python 2 and 3.
+      try:
+        input_function = raw_input
+      except NameError:
+        input_function = input
       if sys.version_info >= (3, 0):
           input_function = input
       else:
