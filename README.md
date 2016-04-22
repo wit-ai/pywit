@@ -121,7 +121,7 @@ See the [docs](https://wit.ai/docs) for more information.
 Starts an interactive conversation with your bot.
 
 Example:
-```js
+```python
 client.interactive();
 ```
 
