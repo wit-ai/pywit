@@ -114,27 +114,28 @@ class Wit:
         return self.__run_actions(session_id, message, context, max_steps,
                                   message)
 
+    def interactive(self, context=None, max_steps=DEFAULT_MAX_STEPS):
+        """Runs interactive command line chat between user and bot. Runs
+        indefinately until EOF is entered to the prompt.
 
-    def interactive(self, init_context=None, max_steps=DEFAULT_MAX_STEPS):
-      """Runs interactive command line chat between user and bot. Runs
-      indefinately until EOF is entered to the prompt.
-
-      init_context -- optional initial context. Set to {} if omitted
-      max_steps -- max number of steps for run_actions.
-      """
-      # initialize/validate initial context
-      context = init_context if init_context is not None else {}
-      # generate type 1 uuid for the session id
-      session_id = uuid.uuid1()
-      # input/raw_input are not interchangible between python 2 and 3.
-      try:
-        input_function = raw_input
-      except NameError:
-        input_function = input
-      # main interactive loop. prompt user, pass msg to run_actions, repeat
-      while True:
+        context -- optional initial context. Set to {} if omitted
+        max_steps -- max number of steps for run_actions.
+        """
+        if max_steps <= 0:
+            raise WitError('max iterations reached')
+        # initialize/validate initial context
+        context = {} if context is None else context
+        # generate type 1 uuid for the session id
+        session_id = uuid.uuid1()
+        # input/raw_input are not interchangible between python 2 and 3.
         try:
-          message = input_function(INTERACTIVE_PROMPT).rstrip()
-        except EOFError:
-          return
-        context = self.run_actions(session_id, message, context, max_steps)
+            input_function = raw_input
+        except NameError:
+            input_function = input
+        # main interactive loop. prompt user, pass msg to run_actions, repeat
+        while True:
+            try:
+                message = input_function(INTERACTIVE_PROMPT).rstrip()
+            except EOFError:
+                return
+            context = self.run_actions(session_id, message, context, max_steps)
