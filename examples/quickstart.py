@@ -1,9 +1,13 @@
 from wit import Wit
+import sys
 
 # Quickstart example
 # See https://wit.ai/l5t/Quickstart
 
-access_token = 'YOUR_ACCESS_TOKEN'
+if len(sys.argv) != 2:
+  print("usage: python examples/quickstart.py <wit-token>")
+  exit(1)
+access_token = sys.argv[1]
 
 def first_entity_value(entities, entity):
     if entity not in entities:
@@ -35,7 +39,6 @@ actions = {
     'error': error,
     'fetch-weather': fetch_weather,
 }
-client = Wit(access_token, actions)
 
-session_id = 'my-user-id-42'
-client.run_actions(session_id, 'weather in London', {})
+client = Wit(access_token, actions)
+client.interactive()

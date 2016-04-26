@@ -27,6 +27,7 @@ See the `examples` folder for examples.
 * `message` - the Wit [message API](https://wit.ai/docs/http/20160330#get-intent-via-text-link)
 * `converse` - the low-level Wit [converse API](https://wit.ai/docs/http/20160330#converse-link)
 * `run_actions` - a higher-level method to the Wit converse API
+* `interactive` - starts an interactive conversation with your bot
 
 ### Wit class
 
@@ -111,6 +112,17 @@ Example:
 ```python
 resp = client.converse('my-user-session-42', 'what is the weather in London?', {})
 print('Yay, got Wit.ai response: ' + str(resp))
+```
+
+See the [docs](https://wit.ai/docs) for more information.
+
+### interactive
+
+Starts an interactive conversation with your bot.
+
+Example:
+```python
+client.interactive()
 ```
 
 See the [docs](https://wit.ai/docs) for more information.
