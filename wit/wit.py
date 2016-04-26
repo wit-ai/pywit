@@ -123,16 +123,7 @@ class Wit:
       max_steps -- max number of steps for run_actions.
       """
       # initialize/validate initial context
-      if init_context is None:
-        context = init_context
-      elif isinstance(init_context, dict):
-        context = init_context
-      else:
-        raise WitError('interactive called with non-dict init_context')
-      # validate max_steps
-      if max_steps <= 0:
-        raise WitError('interactive called with max_steps='
-                       + str(max_steps) + ', must be > 0')
+      context = init_context if init_context is not None else {}
       # generate type 1 uuid for the session id
       session_id = uuid.uuid1()
       # input/raw_input are not interchangible between python 2 and 3.
