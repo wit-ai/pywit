@@ -136,6 +136,6 @@ class Wit:
         while True:
             try:
                 message = input_function(INTERACTIVE_PROMPT).rstrip()
-            except EOFError:
+            except (KeyboardInterrupt, EOFError):
                 return
             context = self.run_actions(session_id, message, context, max_steps)
