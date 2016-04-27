@@ -1,13 +1,12 @@
 from wit import Wit
 
 import logging
-# set a NullLogger so logger will not output to stderror in the
-# case that the client app doesnt configure logging.
-try:
-    logging.getLogger(__name__).addHandler(logging.NullHandler())
-except AttributeError:
-    # NullHandler added in python 2.7, use custom handler for older versions
-    class CustomNullHandler(logging.Handler):
-        def emit(self, record):
-            pass
-    logging.getLogger(__name__).addHandler(CustomNullHandler())
+
+# Set default logging for the module. Client applications can use a custom
+# logging config to override defaults specified here
+logging.getLogger(__name__).setLevel(logging.INFO)
+logging.getLogger(__name__).propagate = False
+formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+handler = logging.StreamHandler()
+handler.setFormatter(formatter)
+logging.getLogger(__name__).addHandler(handler)
