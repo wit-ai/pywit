@@ -1,12 +1,12 @@
-from wit import Wit
 import sys
+from wit import Wit
 
 # Quickstart example
 # See https://wit.ai/l5t/Quickstart
 
 if len(sys.argv) != 2:
-  print("usage: python examples/quickstart.py <wit-token>")
-  exit(1)
+    print("usage: python examples/quickstart.py <wit-token>")
+    exit(1)
 access_token = sys.argv[1]
 
 def first_entity_value(entities, entity):

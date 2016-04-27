@@ -1,3 +1,10 @@
+## v3.4.1
+
+- `interactive()` mode
+- fixed default arg for `context`
+- fixed `say` action in `examples/quickstart.py`
+- examples to take the Wit access token in argument
+
 ## v3.4.0
 
 Unifying action parameters

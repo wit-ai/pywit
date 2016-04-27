@@ -1,10 +1,14 @@
 from random import shuffle
+import sys
 from wit import Wit
 
 # Joke example
 # See https://wit.ai/patapizza/example-joke
 
-access_token = 'YOUR_ACCESS_TOKEN'
+if len(sys.argv) != 2:
+    print("usage: python examples/joke.py <wit-token>")
+    exit(1)
+access_token = sys.argv[1]
 
 def first_entity_value(entities, entity):
     if entity not in entities:

@@ -1,6 +1,10 @@
+import sys
 from wit import Wit
 
-access_token = 'YOUR_ACCESS_TOKEN'
+if len(sys.argv) != 2:
+    print("usage: python examples/template.py <wit-token>")
+    exit(1)
+access_token = sys.argv[1]
 
 def say(session_id, context, msg):
     print(msg)
