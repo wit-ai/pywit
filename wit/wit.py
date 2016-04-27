@@ -2,6 +2,7 @@ import requests
 import os
 import uuid
 import sys
+import logging
 
 WIT_API_HOST = os.getenv('WIT_URL', 'https://api.wit.ai')
 DEFAULT_MAX_STEPS = 5
@@ -47,9 +48,10 @@ class Wit:
     access_token = None
     actions = {}
 
-    def __init__(self, access_token, actions):
+    def __init__(self, access_token, actions, logger=None):
         self.access_token = access_token
         self.actions = validate_actions(actions)
+        self.logger = logger or logging.getLogger(__name__)
 
     def message(self, msg):
         params = {}
@@ -77,29 +79,29 @@ class Wit:
         if rst['type'] == 'msg':
             if 'say' not in self.actions:
                 raise WitError('unknown action: say')
-            print('Executing say with: {}'.format(rst['msg']))
+            self.logger.info('Executing say with: {}'.format(rst['msg']))
             self.actions['say'](session_id, dict(context), rst['msg'])
         elif rst['type'] == 'merge':
             if 'merge' not in self.actions:
                 raise WitError('unknown action: merge')
-            print('Executing merge')
+            self.logger.info('Executing merge')
             context = self.actions['merge'](session_id, dict(context),
                                             rst['entities'], user_message)
             if context is None:
-                print('WARN missing context - did you forget to return it?')
+                self.logger.warn('missing context - did you forget to return it?')
                 context = {}
         elif rst['type'] == 'action':
             if rst['action'] not in self.actions:
                 raise WitError('unknown action: ' + rst['action'])
-            print('Executing action {}'.format(rst['action']))
+            self.logger.info('Executing action {}'.format(rst['action']))
             context = self.actions[rst['action']](session_id, dict(context))
             if context is None:
-                print('WARN missing context - did you forget to return it?')
+                self.logger.warn('missing context - did you forget to return it?')
                 context = {}
         elif rst['type'] == 'error':
             if 'error' not in self.actions:
                 raise WitError('unknown action: error')
-            print('Executing error')
+            self.logger.info('Executing error')
             self.actions['error'](session_id, dict(context),
                                   WitError('Oops, I don\'t know what to do.'))
         else:
