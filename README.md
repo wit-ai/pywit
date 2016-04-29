@@ -66,6 +66,27 @@ from wit import Wit
 client = Wit(token, actions)
 ```
 
+### Logging
+
+Default logging is to `STDOUT` with `INFO` level.
+
+You can set your logging level as follows:
+``` python
+from wit import Wit
+import logging
+client = Wit(token, actions)
+client.logger.setLevel(logging.WARNING)
+```
+
+You can also specify a custom logger object in the Wit constructor:
+``` python
+from wit import Wit
+client = Wit(token, actions, logger=custom_logger)
+```
+
+See the [logging module](https://docs.python.org/2/library/logging.html) and
+[logging.config](https://docs.python.org/2/library/logging.config.html#module-logging.config) docs for more information.
+
 ### message
 
 The Wit [message API](https://wit.ai/docs/http/20160330#get-intent-via-text-link).
