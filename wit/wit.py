@@ -54,18 +54,26 @@ class Wit:
         self.logger = logger or logging.getLogger(__name__)
 
     def message(self, msg):
+        self.logger.debug("Message request: msg=%r", msg)
         params = {}
         if msg:
             params['q'] = msg
-        return req(self.access_token, 'GET', '/message', params)
+        resp = req(self.access_token, 'GET', '/message', params)
+        self.logger.debug("Message response: %s", resp)
+        return resp
+
 
     def converse(self, session_id, message, context=None):
+        self.logger.debug("Converse request: session_id=%s msg=%r context=%s",
+                          session_id, message, context)
         if context is None:
             context = {}
         params = {'session_id': session_id}
         if message:
             params['q'] = message
-        return req(self.access_token, 'POST', '/converse', params, json=context)
+        resp = req(self.access_token, 'POST', '/converse', params, json=context)
+        self.logger.debug("Message response: %s", resp)
+        return resp
 
     def __run_actions(self, session_id, message, context, max_steps,
                       user_message):
