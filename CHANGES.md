@@ -1,3 +1,5 @@
+- warns instead of throwing when validating actions
+
 ## v3.4.1
 
 - `interactive()` mode

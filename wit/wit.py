@@ -30,17 +30,17 @@ def req(access_token, meth, path, params, **kwargs):
         raise WitError('Wit responded with an error: ' + json['error'])
     return json
 
-def validate_actions(actions):
+def validate_actions(logger, actions):
     learn_more = 'Learn more at https://wit.ai/docs/quickstart'
     if not isinstance(actions, dict):
-        raise WitError('The second parameter should be a dictionary.')
+        logger.warn('The second parameter should be a dictionary.')
     for action in ['say', 'merge', 'error']:
         if action not in actions:
-            raise WitError('The \'' + action + '\' action is missing. ' +
-                           learn_more)
+            logger.warn('The \'' + action + '\' action is missing. ' +
+                            learn_more)
     for action in actions.keys():
         if not hasattr(actions[action], '__call__'):
-            raise TypeError('The \'' + action +
+            logger.warn('The \'' + action +
                             '\' action should be a function.')
     return actions
 
@@ -50,8 +50,8 @@ class Wit:
 
     def __init__(self, access_token, actions, logger=None):
         self.access_token = access_token
-        self.actions = validate_actions(actions)
         self.logger = logger or logging.getLogger(__name__)
+        self.actions = validate_actions(self.logger, actions)
 
     def message(self, msg):
         self.logger.debug("Message request: msg=%r", msg)
