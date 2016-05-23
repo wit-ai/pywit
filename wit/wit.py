@@ -5,6 +5,7 @@ import sys
 import logging
 
 WIT_API_HOST = os.getenv('WIT_URL', 'https://api.wit.ai')
+WIT_API_VERSION = os.getenv('WIT_API_VERSION', '20160516')
 DEFAULT_MAX_STEPS = 5
 INTERACTIVE_PROMPT = '> '
 
@@ -17,7 +18,7 @@ def req(access_token, meth, path, params, **kwargs):
         WIT_API_HOST + path,
         headers={
             'authorization': 'Bearer ' + access_token,
-            'accept': 'application/vnd.wit.20160330+json'
+            'accept': 'application/vnd.wit.' + WIT_API_VERSION + '+json'
         },
         params=params,
         **kwargs

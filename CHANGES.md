@@ -1,4 +1,13 @@
+## v3.5
+
+- allows for overriding API version, by setting `WIT_API_VERSION`
+- fixes unicode error
+- adds custom logging
 - warns instead of throwing when validating actions
+
+### breaking
+
+- bumped default API version from `20160330` to `20160516`
 
 ## v3.4.1
 

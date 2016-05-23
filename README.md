@@ -21,6 +21,11 @@ See the `examples` folder for examples.
 
 ## API
 
+### Versioning
+
+The default API version is `20160516`.
+You can target a specific version by setting the env variable `WIT_API_VERSION`.
+
 ### Overview
 
 `pywit` provides a Wit class with the following methods:
