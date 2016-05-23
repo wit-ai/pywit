@@ -87,7 +87,7 @@ class Wit:
         if rst['type'] == 'msg':
             if 'say' not in self.actions:
                 raise WitError('unknown action: say')
-            self.logger.info('Executing say with: {}'.format(rst['msg']))
+            self.logger.info('Executing say with: {}'.format(rst['msg'].encode('utf8')))
             self.actions['say'](session_id, dict(context), rst['msg'])
         elif rst['type'] == 'merge':
             if 'merge' not in self.actions:
