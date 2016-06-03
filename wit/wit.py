@@ -54,9 +54,11 @@ class Wit:
         self.logger = logger or logging.getLogger(__name__)
         self.actions = validate_actions(self.logger, actions)
 
-    def message(self, msg):
+    def message(self, msg, verbose=False):
         self.logger.debug('Message request: msg=%r', msg)
         params = {}
+        if verbose:
+            params['verbose'] = True
         if msg:
             params['q'] = msg
         resp = req(self.access_token, 'GET', '/message', params)
@@ -64,12 +66,14 @@ class Wit:
         return resp
 
 
-    def converse(self, session_id, message, context=None):
+    def converse(self, session_id, message, verbose=False, context=None):
         self.logger.debug('Converse request: session_id=%s msg=%r context=%s',
                           session_id, message, context)
         if context is None:
             context = {}
         params = {'session_id': session_id}
+        if verbose:
+            params['verbose'] = True
         if message:
             params['q'] = message
         resp = req(self.access_token, 'POST', '/converse', params, json=context)
