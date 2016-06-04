@@ -54,33 +54,36 @@ class Wit:
         self.logger = logger or logging.getLogger(__name__)
         self.actions = validate_actions(self.logger, actions)
 
-    def message(self, msg):
-        self.logger.debug('Message request: msg=%r', msg)
+    def message(self, msg, verbose=None):
+        self.logger.debug('Message request: msg=%r verbose=%s', msg, verbose)
         params = {}
         if msg:
             params['q'] = msg
+        if verbose:
+            params['verbose'] = True
         resp = req(self.access_token, 'GET', '/message', params)
         self.logger.debug('Message response: %s', resp)
         return resp
 
-
-    def converse(self, session_id, message, context=None):
-        self.logger.debug('Converse request: session_id=%s msg=%r context=%s',
-                          session_id, message, context)
+    def converse(self, session_id, msg, context=None, verbose=None):
+        self.logger.debug('Converse request: session_id=%s msg=%r context=%s verbose=%s',
+                          session_id, msg, context, verbose)
         if context is None:
             context = {}
         params = {'session_id': session_id}
-        if message:
-            params['q'] = message
+        if msg:
+            params['q'] = msg
+        if verbose:
+            params['verbose'] = True
         resp = req(self.access_token, 'POST', '/converse', params, json=context)
         self.logger.debug('Message response: %s', resp)
         return resp
 
-    def __run_actions(self, session_id, message, context, max_steps,
+    def __run_actions(self, session_id, msg, context, max_steps, verbose,
                       user_message):
         if max_steps <= 0:
             raise WitError('max iterations reached')
-        rst = self.converse(session_id, message, context)
+        rst = self.converse(session_id, msg, context, verbose)
         if 'type' not in rst:
             raise WitError('couldn\'t find type in Wit response')
         if rst['type'] == 'stop':
@@ -116,14 +119,14 @@ class Wit:
         else:
             raise WitError('unknown type: ' + rst['type'])
         return self.__run_actions(session_id, None, context, max_steps - 1,
-                                  user_message)
+                                  verbose, user_message)
 
-    def run_actions(self, session_id, message, context=None,
-                    max_steps=DEFAULT_MAX_STEPS):
+    def run_actions(self, session_id, msg, context=None,
+                    max_steps=DEFAULT_MAX_STEPS, verbose=None):
         if context is None:
             context = {}
-        return self.__run_actions(session_id, message, context, max_steps,
-                                  message)
+        return self.__run_actions(session_id, msg, context, max_steps, verbose,
+                                  msg)
 
     def interactive(self, context=None, max_steps=DEFAULT_MAX_STEPS):
         """Runs interactive command line chat between user and bot. Runs

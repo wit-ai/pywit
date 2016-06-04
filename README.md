@@ -98,6 +98,7 @@ The Wit [message API](https://wit.ai/docs/http/20160330#get-intent-via-text-link
 
 Takes the following parameters:
 * `msg` - the text you want Wit.ai to extract the information from
+* `verbose` - (optional) if set, calls the API with `verbose=true`
 
 Example:
 ```python
@@ -114,6 +115,7 @@ Takes the following parameters:
 * `message` - the text received from the user
 * `context` - the dict representing the session state
 * `max_steps` - (optional) the maximum number of actions to execute (defaults to 5)
+* `verbose` - (optional) if set, calls the API with `verbose=true`
 
 Example:
 ```python
@@ -133,6 +135,7 @@ Takes the following parameters:
 * `session_id` - a unique identifier describing the user session
 * `message` - the text received from the user
 * `context` - the dict representing the session state
+* `verbose` - (optional) if set, sets the API parameter `verbose` to `true`
 
 Example:
 ```python

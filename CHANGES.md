@@ -1,3 +1,5 @@
+- adding verbose option for `message`, `converse` and `run_actions`
+
 ## v3.5
 
 - allows for overriding API version, by setting `WIT_API_VERSION`
