@@ -1,7 +1,6 @@
 import requests
 import os
 import uuid
-import sys
 import logging
 
 WIT_API_HOST = os.getenv('WIT_URL', 'https://api.wit.ai')
@@ -9,8 +8,10 @@ WIT_API_VERSION = os.getenv('WIT_API_VERSION', '20160516')
 DEFAULT_MAX_STEPS = 5
 INTERACTIVE_PROMPT = '> '
 
+
 class WitError(Exception):
     pass
+
 
 def req(access_token, meth, path, params, **kwargs):
     rsp = requests.request(
@@ -31,6 +32,7 @@ def req(access_token, meth, path, params, **kwargs):
         raise WitError('Wit responded with an error: ' + json['error'])
     return json
 
+
 def validate_actions(logger, actions):
     learn_more = 'Learn more at https://wit.ai/docs/quickstart'
     if not isinstance(actions, dict):
@@ -45,7 +47,8 @@ def validate_actions(logger, actions):
                             '\' action should be a function.')
     return actions
 
-class Wit:
+
+class Wit(object):
     access_token = None
     actions = {}
 
@@ -98,7 +101,7 @@ class Wit:
                 raise WitError('unknown action: merge')
             self.logger.info('Executing merge')
             context = self.actions['merge'](session_id, dict(context),
-                                            rst['entities'], user_message)
+                                            rst.get('entities', {}), user_message)
             if context is None:
                 self.logger.warn('missing context - did you forget to return it?')
                 context = {}
