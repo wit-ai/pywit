@@ -2,21 +2,13 @@ from random import shuffle
 import sys
 from wit import Wit
 
-# Joke example
-# See https://wit.ai/patapizza/example-joke
-
 if len(sys.argv) != 2:
-    print("usage: python examples/joke.py <wit-token>")
+    print('usage: python ' + sys.argv[0] + ' <wit-token>')
     exit(1)
 access_token = sys.argv[1]
 
-def first_entity_value(entities, entity):
-    if entity not in entities:
-        return None
-    val = entities[entity][0]['value']
-    if not val:
-        return None
-    return val['value'] if isinstance(val, dict) else val
+# Joke example
+# See https://wit.ai/patapizza/example-joke
 
 all_jokes = {
     'chuck': [
@@ -32,10 +24,21 @@ all_jokes = {
     ],
 }
 
-def say(session_id, context, msg):
-    print(msg)
+def first_entity_value(entities, entity):
+    if entity not in entities:
+        return None
+    val = entities[entity][0]['value']
+    if not val:
+        return None
+    return val['value'] if isinstance(val, dict) else val
 
-def merge(session_id, context, entities, msg):
+def send(request, response):
+    print(response['text'])
+
+def merge(request):
+    context = request['context']
+    entities = request['entities']
+
     if 'joke' in context:
         del context['joke']
     category = first_entity_value(entities, 'category')
@@ -48,22 +51,19 @@ def merge(session_id, context, entities, msg):
         del context['ack']
     return context
 
-def error(session_id, context, e):
-    print(str(e))
+def select_joke(request):
+    context = request['context']
 
-def select_joke(session_id, context):
     jokes = all_jokes[context['cat'] or 'default']
     shuffle(jokes)
     context['joke'] = jokes[0]
     return context
 
 actions = {
-    'say': say,
+    'send': send,
     'merge': merge,
-    'error': error,
     'select-joke': select_joke,
 }
-client = Wit(access_token, actions)
 
-session_id = 'my-user-id-42'
-client.run_actions(session_id, 'tell me a joke about tech', {})
+client = Wit(access_token=access_token, actions=actions)
+client.interactive()

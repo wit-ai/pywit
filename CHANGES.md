@@ -1,3 +1,15 @@
+## v4.0.0
+
+After a lot of internal dogfooding and bot building, we decided to change the API in a backwards-incompatible way. The changes are described below and aim to simplify user code and accommodate upcoming features.
+
+See `./examples` to see how to use the new API.
+
+### Breaking changes
+
+- `say` renamed to `send` to reflect that it deals with more than just text
+- Removed built-in actions `merge` and `error`
+- Actions signature simplified with `request` and `response` arguments
+- INFO level replaces LOG level
 - adding verbose option for `message`, `converse` and `run_actions`
 
 ## v3.5
