@@ -1,13 +1,13 @@
 import sys
 from wit import Wit
 
-# Quickstart example
-# See https://wit.ai/l5t/Quickstart
-
 if len(sys.argv) != 2:
-    print("usage: python examples/quickstart.py <wit-token>")
+    print('usage: python ' + sys.argv[0] + ' <wit-token>')
     exit(1)
 access_token = sys.argv[1]
+
+# Quickstart example
+# See https://wit.ai/ar7hur/Quickstart
 
 def first_entity_value(entities, entity):
     if entity not in entities:
@@ -17,28 +17,27 @@ def first_entity_value(entities, entity):
         return None
     return val['value'] if isinstance(val, dict) else val
 
-def say(session_id, context, msg):
-    print(msg)
+def send(request, response):
+    print(response['text'])
 
-def merge(session_id, context, entities, msg):
+def get_forecast(request):
+    context = request['context']
+    entities = request['entities']
+
     loc = first_entity_value(entities, 'location')
     if loc:
-        context['loc'] = loc
-    return context
+        context['forecast'] = 'sunny'
+    else:
+        context['missingLocation'] = True
+        if context.get('forecast') is not None:
+            del context['forecast']
 
-def error(session_id, context, e):
-    print(str(e))
-
-def fetch_weather(session_id, context):
-    context['forecast'] = 'sunny'
     return context
 
 actions = {
-    'say': say,
-    'merge': merge,
-    'error': error,
-    'fetch-weather': fetch_weather,
+    'send': send,
+    'getForecast': get_forecast,
 }
 
-client = Wit(access_token, actions)
+client = Wit(access_token=access_token, actions=actions)
 client.interactive()
