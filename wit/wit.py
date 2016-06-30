@@ -1,7 +1,6 @@
 import requests
 import os
 import uuid
-import sys
 import logging
 
 WIT_API_HOST = os.getenv('WIT_URL', 'https://api.wit.ai')
@@ -9,6 +8,7 @@ WIT_API_VERSION = os.getenv('WIT_API_VERSION', '20160516')
 DEFAULT_MAX_STEPS = 5
 INTERACTIVE_PROMPT = '> '
 LEARN_MORE = 'Learn more at https://wit.ai/docs/quickstart'
+
 
 class WitError(Exception):
     pass
@@ -36,6 +36,7 @@ def req(logger, access_token, meth, path, params, **kwargs):
     logger.debug('%s %s %s', meth, full_url, json)
     return json
 
+
 def validate_actions(logger, actions):
     if not isinstance(actions, dict):
         logger.warn('The second parameter should be a dictionary.')
@@ -49,7 +50,8 @@ def validate_actions(logger, actions):
                             '\' action should be a function.')
     return actions
 
-class Wit:
+
+class Wit(object):
     access_token = None
     actions = {}
 
@@ -99,7 +101,6 @@ class Wit:
 
         if json['type'] == 'stop':
             return context
-
         request = {
             'session_id': session_id,
             'context': dict(context),
