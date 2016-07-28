@@ -7,6 +7,7 @@ import logging
 WIT_API_HOST = os.getenv('WIT_URL', 'https://api.wit.ai')
 WIT_API_VERSION = os.getenv('WIT_API_VERSION', '20160516')
 DEFAULT_MAX_STEPS = 5
+DEFAULT_ACTION_CONFIDENCE = 0
 INTERACTIVE_PROMPT = '> '
 LEARN_MORE = 'Learn more at https://wit.ai/docs/quickstart'
 
@@ -79,7 +80,7 @@ class Wit:
         resp = req(self.logger, self.access_token, 'POST', '/converse', params, json=context)
         return resp
 
-    def __run_actions(self, session_id, message, context, i, verbose):
+    def __run_actions(self, session_id, message, context, i, verbose, action_confidence):
         if i <= 0:
             raise WitError('Max steps reached, stopping.')
         json = self.converse(session_id, message, context, verbose)
@@ -99,6 +100,9 @@ class Wit:
 
         if json['type'] == 'stop':
             return context
+
+        if json['confidence'] < action_confidence:
+            raise WitError('Oops, confidence %s too low.' % action_confidence)
 
         request = {
             'session_id': session_id,
@@ -125,13 +129,13 @@ class Wit:
         return self.__run_actions(session_id, None, context, i - 1, verbose)
 
     def run_actions(self, session_id, message, context=None,
-                    max_steps=DEFAULT_MAX_STEPS, verbose=None):
+                    max_steps=DEFAULT_MAX_STEPS, verbose=None, action_confidence = DEFAULT_ACTION_CONFIDENCE):
         if not self.actions:
             self.throw_must_have_actions()
 
         if context is None:
             context = {}
-        return self.__run_actions(session_id, message, context, max_steps, verbose)
+        return self.__run_actions(session_id, message, context, max_steps, verbose,action_confidence)
 
     def interactive(self, context=None, max_steps=DEFAULT_MAX_STEPS):
         """Runs interactive command line chat between user and bot. Runs
