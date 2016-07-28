@@ -126,7 +126,7 @@ class Wit:
                 context = {}
         else:
             raise WitError('unknown type: ' + json['type'])
-        return self.__run_actions(session_id, None, context, i - 1, verbose)
+        return self.__run_actions(session_id, None, context, i - 1, verbose, action_confidence)
 
     def run_actions(self, session_id, message, context=None,
                     max_steps=DEFAULT_MAX_STEPS, verbose=None, action_confidence = DEFAULT_ACTION_CONFIDENCE):
