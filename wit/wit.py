@@ -102,7 +102,7 @@ class Wit:
             return context
 
         if json['confidence'] < action_confidence:
-            raise WitError('Oops, confidence %s too low.' % action_confidence)
+            raise WitError('Oops, confidence %s too low. Must over %s.' % (json['confidence'], action_confidence))
 
         request = {
             'session_id': session_id,
