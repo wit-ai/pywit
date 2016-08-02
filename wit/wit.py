@@ -99,6 +99,7 @@ class Wit:
             raise WitError('Oops, I don\'t know what to do.')
 
         if json['type'] == 'stop':
+            context['stop'] = True
             return context
 
         if json['confidence'] < action_confidence:
@@ -135,7 +136,7 @@ class Wit:
 
         if context is None:
             context = {}
-        return self.__run_actions(session_id, message, context, max_steps, verbose,action_confidence)
+        return self.__run_actions(session_id, message, context, max_steps, verbose, action_confidence)
 
     def interactive(self, context=None, max_steps=DEFAULT_MAX_STEPS):
         """Runs interactive command line chat between user and bot. Runs
