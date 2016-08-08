@@ -3,6 +3,7 @@ import os
 import uuid
 import sys
 import logging
+import json
 
 WIT_API_HOST = os.getenv('WIT_URL', 'https://api.wit.ai')
 WIT_API_VERSION = os.getenv('WIT_API_VERSION', '20160516')
@@ -76,7 +77,7 @@ class Wit:
             params['verbose'] = True
         if message:
             params['q'] = message
-        resp = req(self.logger, self.access_token, 'POST', '/converse', params, json=context)
+        resp = req(self.logger, self.access_token, 'POST', '/converse', params, data=json.dumps(context))
         return resp
 
     def __run_actions(self, session_id, message, context, i, verbose):
