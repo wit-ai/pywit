@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# encoding: utf-8
+# 阅读笔记
 import sys
 from wit import Wit
 
@@ -39,5 +42,5 @@ actions = {
     'getForecast': get_forecast,
 }
 
-client = Wit(access_token=access_token, actions=actions)
-client.interactive()
+client = Wit(access_token=access_token, actions=actions) # 研究入口
+client.interactive() # 用户输入，跟踪过去
