@@ -161,7 +161,7 @@ class Wit:
         while True:
             try:
                 #message = input_function(INTERACTIVE_PROMPT).rstrip()
-                message = prompt(INTERACTIVE_PROMPT, history=history).rstrip()
+                message = prompt(INTERACTIVE_PROMPT, history=history,mouse_support=True).rstrip()
             except (KeyboardInterrupt, EOFError):
                 return
             context = self.run_actions(session_id, message, context, max_steps)
