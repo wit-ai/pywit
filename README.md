@@ -77,6 +77,7 @@ print('Yay, got Wit.ai response: ' + str(resp))
 ### .run_actions()
 
 A higher-level method to the Wit converse API.
+`run_actions` resets the last turn on new messages and errors.
 
 Takes the following parameters:
 * `session_id` - a unique identifier describing the user session
@@ -103,6 +104,7 @@ Takes the following parameters:
 * `session_id` - a unique identifier describing the user session
 * `message` - the text received from the user
 * `context` - the dict representing the session state
+* `reset` - (optional) whether to reset the last turn
 * `verbose` - (optional) if set, sets the API parameter `verbose` to `true`
 
 Example:

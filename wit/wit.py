@@ -1,9 +1,9 @@
-import requests
-import os
-import uuid
-import sys
-import logging
 import json
+import logging
+import os
+import requests
+import sys
+import uuid
 
 WIT_API_HOST = os.getenv('WIT_URL', 'https://api.wit.ai')
 WIT_API_VERSION = os.getenv('WIT_API_VERSION', '20160516')
@@ -53,6 +53,7 @@ def validate_actions(logger, actions):
 class Wit:
     access_token = None
     actions = {}
+    _sessions = {}
 
     def __init__(self, access_token, actions=None, logger=None):
         self.access_token = access_token
@@ -69,7 +70,8 @@ class Wit:
         resp = req(self.logger, self.access_token, 'GET', '/message', params)
         return resp
 
-    def converse(self, session_id, message, context=None, verbose=None):
+    def converse(self, session_id, message, context=None, reset=None,
+                 verbose=None):
         if context is None:
             context = {}
         params = {'session_id': session_id}
@@ -77,15 +79,21 @@ class Wit:
             params['verbose'] = True
         if message:
             params['q'] = message
-        resp = req(self.logger, self.access_token, 'POST', '/converse', params, data=json.dumps(context))
+        if reset:
+            params['reset'] = True
+        resp = req(self.logger, self.access_token, 'POST', '/converse', params,
+                   data=json.dumps(context))
         return resp
 
-    def __run_actions(self, session_id, message, context, i, verbose):
+    def __run_actions(self, session_id, current_request, message, context, i,
+                      verbose):
         if i <= 0:
             raise WitError('Max steps reached, stopping.')
         json = self.converse(session_id, message, context, verbose)
         if 'type' not in json:
             raise WitError('Couldn\'t find type in Wit response')
+        if current_request != self._sessions[session_id]:
+            return context
 
         self.logger.debug('Context: %s', context)
         self.logger.debug('Response type: %s', json['type'])
@@ -123,16 +131,33 @@ class Wit:
                 context = {}
         else:
             raise WitError('unknown type: ' + json['type'])
-        return self.__run_actions(session_id, None, context, i - 1, verbose)
+        if current_request != self._sessions[session_id]:
+            return context
+        return self.__run_actions(session_id, current_request, None, context,
+                                  i - 1, verbose)
 
     def run_actions(self, session_id, message, context=None,
                     max_steps=DEFAULT_MAX_STEPS, verbose=None):
         if not self.actions:
             self.throw_must_have_actions()
-
         if context is None:
             context = {}
-        return self.__run_actions(session_id, message, context, max_steps, verbose)
+
+        # Figuring out whether we need to reset the last turn.
+        # Each new call increments an index for the session.
+        # We only care about the last call to run_actions.
+        # All the previous ones are discarded (preemptive exit).
+        current_request = self._sessions[session_id] + 1 if session_id in self._sessions else 1
+        self._sessions[session_id] = current_request
+
+        context = self.__run_actions(session_id, current_request, message,
+                                     context, max_steps, verbose)
+
+        # Cleaning up once the last call to run_actions finishes.
+        if current_request == self._sessions[session_id]:
+            del self._sessions[session_id]
+
+        return context
 
     def interactive(self, context=None, max_steps=DEFAULT_MAX_STEPS):
         """Runs interactive command line chat between user and bot. Runs
