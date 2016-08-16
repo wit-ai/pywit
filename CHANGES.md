@@ -1,3 +1,8 @@
+### Breaking changes
+
+- `converse` now takes `reset` as optional parameter.
+- `run_actions` now resets the last turn on new messages and errors.
+
 ## v4.0.0
 
 After a lot of internal dogfooding and bot building, we decided to change the API in a backwards-incompatible way. The changes are described below and aim to simplify user code and accommodate upcoming features.
