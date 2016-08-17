@@ -1,3 +1,5 @@
+## v4.1.0
+
 ### Breaking changes
 
 - `converse` now takes `reset` as optional parameter.
