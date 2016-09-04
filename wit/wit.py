@@ -89,7 +89,7 @@ class Wit:
                       verbose):
         if i <= 0:
             raise WitError('Max steps reached, stopping.')
-        json = self.converse(session_id, message, context, verbose)
+        json = self.converse(session_id, message, context, verbose=verbose)
         if 'type' not in json:
             raise WitError('Couldn\'t find type in Wit response')
         if current_request != self._sessions[session_id]:
