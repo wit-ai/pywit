@@ -17,13 +17,15 @@ class WitError(Exception):
 def req(logger, access_token, meth, path, params, **kwargs):
     full_url = WIT_API_HOST + path
     logger.debug('%s %s %s', meth, full_url, params)
+    headers = {
+        'authorization': 'Bearer ' + access_token,
+        'accept': 'application/vnd.wit.' + WIT_API_VERSION + '+json'
+    }
+    headers.update(kwargs.pop('headers', {}))
     rsp = requests.request(
         meth,
         full_url,
-        headers={
-            'authorization': 'Bearer ' + access_token,
-            'accept': 'application/vnd.wit.' + WIT_API_VERSION + '+json'
-        },
+        headers=headers,
         params=params,
         **kwargs
     )
@@ -68,6 +70,23 @@ class Wit:
         if msg:
             params['q'] = msg
         resp = req(self.logger, self.access_token, 'GET', '/message', params)
+        return resp
+
+    def speech(self, audio_file, verbose=None):
+        """ Sends an audio file to the /speech API.
+
+        See https://wit.ai/docs/http/20160526#post--speech-link
+
+        :param audio_file: an open handler to an audio file
+        :param verbose:
+        :return:
+        """
+        params = {}
+        params = {}
+        if verbose:
+            params['verbose'] = True
+        resp = req(self.logger, self.access_token, 'POST', '/speech', params,
+                   data=audio_file)
         return resp
 
     def converse(self, session_id, message, context=None, reset=None,
