@@ -82,7 +82,6 @@ class Wit:
         :return:
         """
         params = {}
-        params = {}
         if verbose:
             params['verbose'] = True
         resp = req(self.logger, self.access_token, 'POST', '/speech', params,
