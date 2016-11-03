@@ -1,3 +1,7 @@
+## v4.2.0
+
+- added a `speech()` method to send audio files to the API (thanks @willywongi)
+
 ## v4.1.0
 
 ### Breaking changes
