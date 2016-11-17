@@ -63,12 +63,14 @@ class Wit:
         if actions:
             self.actions = validate_actions(self.logger, actions)
 
-    def message(self, msg, verbose=None):
+    def message(self, msg, context=None, verbose=None):
         params = {}
         if verbose:
             params['verbose'] = True
         if msg:
             params['q'] = msg
+        if context:
+            params['context'] = json.dumps(context)
         resp = req(self.logger, self.access_token, 'GET', '/message', params)
         return resp
 

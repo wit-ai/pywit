@@ -1,3 +1,7 @@
+### Breaking changes
+
+- `message` now takes an optional `context` as second parameter
+
 ## v4.2.0
 
 - added a `speech()` method to send audio files to the API (thanks @willywongi)
