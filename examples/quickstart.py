@@ -27,6 +27,7 @@ def get_forecast(request):
     loc = first_entity_value(entities, 'location')
     if loc:
         context['forecast'] = 'sunny'
+        del context['missingLocation']
     else:
         context['missingLocation'] = True
         if context.get('forecast') is not None:
