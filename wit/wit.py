@@ -40,7 +40,6 @@ def req(logger, access_token, meth, path, params, **kwargs):
         raise WitError('Wit responded with an error: ' + json['error'])
 
     logger.debug('%s %s %s', meth, full_url, json)
-    print(json) #todo:use logging
     return json
 
 def validate_actions(logger, actions):
@@ -132,7 +131,6 @@ class Wit:
             json['action'] = 'merge'
 
         if json['type'] == 'error':
-            print(json)
             raise WitError('Oops, I don\'t know what to do.')
 
         if json['type'] == 'stop':
@@ -212,8 +210,7 @@ class Wit:
         history = InMemoryHistory()
         while True:
             try:
-                #message = input_function(INTERACTIVE_PROMPT).rstrip()
-                message = prompt(INTERACTIVE_PROMPT, history=history,mouse_support=True).rstrip()
+                message = prompt(INTERACTIVE_PROMPT, history=history, mouse_support=True).rstrip()
             except (KeyboardInterrupt, EOFError):
                 return
             context = self.run_actions(session_id, message, context, max_steps)
