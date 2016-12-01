@@ -1,9 +1,12 @@
+from __future__ import unicode_literals
 import json
 import logging
 import os
 import requests
 import sys
 import uuid
+from prompt_toolkit import prompt
+from prompt_toolkit.history import InMemoryHistory
 
 WIT_API_HOST = os.getenv('WIT_URL', 'https://api.wit.ai')
 WIT_API_VERSION = os.getenv('WIT_API_VERSION', '20160516')
@@ -204,9 +207,10 @@ class Wit:
             input_function = input
 
         session_id = uuid.uuid1()
+        history = InMemoryHistory()
         while True:
             try:
-                message = input_function(INTERACTIVE_PROMPT).rstrip()
+                message = prompt(INTERACTIVE_PROMPT, history=history, mouse_support=True).rstrip()
             except (KeyboardInterrupt, EOFError):
                 return
             context = self.run_actions(session_id, message, context, max_steps)
