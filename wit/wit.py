@@ -55,7 +55,7 @@ def validate_actions(logger, actions):
                             '\' action should be a function.')
     return actions
 
-class Wit:
+class Wit(object):
     access_token = None
     actions = {}
     _sessions = {}
