@@ -30,6 +30,7 @@ You can target a specific version by setting the env variable `WIT_API_VERSION`.
 
 `pywit` provides a Wit class with the following methods:
 * `message` - the Wit [message API](https://wit.ai/docs/http/20160330#get-intent-via-text-link)
+* `speech` - the Wit [speech API](https://wit.ai/docs/http/20160526#post--speech-link)
 * `converse` - the low-level Wit [converse API](https://wit.ai/docs/http/20160330#converse-link)
 * `run_actions` - a higher-level method to the Wit converse API
 * `interactive` - starts an interactive conversation with your bot
@@ -71,6 +72,23 @@ Takes the following parameters:
 Example:
 ```python
 resp = client.message('what is the weather in London?')
+print('Yay, got Wit.ai response: ' + str(resp))
+```
+
+### .speech()
+
+The Wit [speech API](https://wit.ai/docs/http/20160526#post--speech-link).
+
+Takes the following parameters:
+* `audio_file` - a file handler opened in binary mode
+* `verbose` - (optional) if set, calls the API with `verbose=true`
+* `headers` - (optional) the dict of headers (e.g. "Content-Type")
+
+Example:
+```python
+resp = None
+with open('test.wav', 'rb') as f:
+  resp = client.speech(f, None, {'Content-Type': 'audio/wav'})
 print('Yay, got Wit.ai response: ' + str(resp))
 ```
 
