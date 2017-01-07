@@ -66,7 +66,7 @@ class Wit(object):
         if actions:
             self.actions = validate_actions(self.logger, actions)
 
-    def message(self, msg, context=None, verbose=None):
+    def message(self, msg, context=None, verbose=None, thread_id=None):
         params = {}
         if verbose:
             params['verbose'] = True
@@ -74,6 +74,8 @@ class Wit(object):
             params['q'] = msg
         if context:
             params['context'] = json.dumps(context)
+        if thread_id:
+            params['thread_id'] = str(thread_id)  # Might be an int
         resp = req(self.logger, self.access_token, 'GET', '/message', params)
         return resp
 
