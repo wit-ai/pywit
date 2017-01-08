@@ -69,7 +69,10 @@ def messenger_post():
                 # We retrieve the Facebook user ID of the sender
                 fb_id = message['sender']['id']
                 # We retrieve the message content
-                text = message['message']['text']
+                if 'text' in message['message']:
+                    text = message['message']['text']
+                else:
+                    text = ''
                 # Let's forward the message to the Wit.ai Bot Engine
                 # We handle the response in the function send()
                 client.run_actions(session_id=fb_id, message=text)
