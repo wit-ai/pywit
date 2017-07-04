@@ -7,7 +7,7 @@ if len(sys.argv) != 2:
 access_token = sys.argv[1]
 
 # Quickstart example
-# See https://wit.ai/ar7hur/Quickstart
+# See https://wit.ai/ar7hur/quickstart
 
 def first_entity_value(entities, entity):
     if entity not in entities:
