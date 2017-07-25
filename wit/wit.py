@@ -1,4 +1,8 @@
+from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
 from __future__ import unicode_literals
+
 import json
 import logging
 import os
@@ -64,6 +68,7 @@ class Wit(object):
         self.access_token = access_token
         self.logger = logger or logging.getLogger(__name__)
         if actions:
+            self.logger.error('Stories and POST /converse have been deprecated. This will break in February 2018!')
             self.actions = validate_actions(self.logger, actions)
 
     def message(self, msg, context=None, verbose=None):
@@ -96,6 +101,29 @@ class Wit(object):
         resp = req(self.logger, self.access_token, 'POST', '/speech', params,
                    data=audio_file, headers=headers)
         return resp
+
+    def interactive(self, context=None):
+        """Runs interactive command line chat between user and bot. Runs
+        indefinitely until EOF is entered to the prompt.
+
+        context -- optional initial context. Set to {} if omitted
+        """
+        if context is None:
+            context = {}
+
+        # input/raw_input are not interchangeable between Python 2 and 3
+        try:
+            input_function = raw_input
+        except NameError:
+            input_function = input
+
+        history = InMemoryHistory()
+        while True:
+            try:
+                message = prompt(INTERACTIVE_PROMPT, history=history, mouse_support=True).rstrip()
+            except (KeyboardInterrupt, EOFError):
+                return
+            print(self.message(message, context))
 
     def converse(self, session_id, message, context=None, reset=None,
                  verbose=None):
@@ -185,35 +213,6 @@ class Wit(object):
             del self._sessions[session_id]
 
         return context
-
-    def interactive(self, context=None, max_steps=DEFAULT_MAX_STEPS):
-        """Runs interactive command line chat between user and bot. Runs
-        indefinately until EOF is entered to the prompt.
-
-        context -- optional initial context. Set to {} if omitted
-        max_steps -- max number of steps for run_actions.
-        """
-        if not self.actions:
-            self.throw_must_have_actions()
-        if max_steps <= 0:
-            raise WitError('max iterations reached')
-        if context is None:
-            context = {}
-
-        # input/raw_input are not interchangible between python 2 and 3
-        try:
-            input_function = raw_input
-        except NameError:
-            input_function = input
-
-        session_id = uuid.uuid1()
-        history = InMemoryHistory()
-        while True:
-            try:
-                message = prompt(INTERACTIVE_PROMPT, history=history, mouse_support=True).rstrip()
-            except (KeyboardInterrupt, EOFError):
-                return
-            context = self.run_actions(session_id, message, context, max_steps)
 
     def throw_if_action_missing(self, action_name):
         if action_name not in self.actions:

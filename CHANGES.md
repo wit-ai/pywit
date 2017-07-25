@@ -1,6 +1,9 @@
-### Breaking changes
+## v4.3.0
 
 - `message` now takes an optional `context` as second parameter
+- `converse` and `run_actions` are deprecated
+- `interactive` now calls `message`
+- Python 3 compatibility (future imports)
 
 ## v4.2.0
 

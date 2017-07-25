@@ -12,7 +12,7 @@ pip install wit
 From source:
 ```bash
 git clone https://github.com/wit-ai/pywit
-python setup.py install
+pip install .
 ```
 
 ## Usage
@@ -31,34 +31,20 @@ You can target a specific version by setting the env variable `WIT_API_VERSION`.
 `pywit` provides a Wit class with the following methods:
 * `message` - the Wit [message API](https://wit.ai/docs/http/20160330#get-intent-via-text-link)
 * `speech` - the Wit [speech API](https://wit.ai/docs/http/20160526#post--speech-link)
-* `converse` - the low-level Wit [converse API](https://wit.ai/docs/http/20160330#converse-link)
-* `run_actions` - a higher-level method to the Wit converse API
 * `interactive` - starts an interactive conversation with your bot
 
 ### Wit class
 
 The Wit constructor takes the following parameters:
 * `access_token` - the access token of your Wit instance
-* `actions` - (optional if you only use `message()`) the dictionary with your actions
-
-`actions` has action names as keys and action implementations as values.
 
 A minimal example looks like this:
 
 ```python
 from wit import Wit
 
-def send(request, response):
-    print('Sending to user...', response['text'])
-def my_action(request):
-    print('Received from user...', request['text'])
-
-actions = {
-    'send': send,
-    'my_action': my_action,
-}
-
-client = Wit(access_token=access_token, actions=actions)
+client = Wit(access_token)
+client.message('set an alarm tomorrow at 7am')
 ```
 
 ### .message()
@@ -92,7 +78,20 @@ with open('test.wav', 'rb') as f:
 print('Yay, got Wit.ai response: ' + str(resp))
 ```
 
+### .interactive()
+
+Starts an interactive conversation with your bot.
+
+Example:
+```python
+client.interactive()
+```
+
+See the [docs](https://wit.ai/docs) for more information.
+
 ### .run_actions()
+
+**DEPRECATED** See [our blog post](https://wit.ai/blog/2017/07/27/sunsetting-stories) for a migration plan.
 
 A higher-level method to the Wit converse API.
 `run_actions` resets the last turn on new messages and errors.
@@ -116,6 +115,8 @@ print('The session state is now: ' + str(context2))
 
 ### .converse()
 
+**DEPRECATED** See [our blog post](https://wit.ai/blog/2017/07/27/sunsetting-stories) for a migration plan.
+
 The low-level Wit [converse API](https://wit.ai/docs/http/20160330#converse-link).
 
 Takes the following parameters:
@@ -133,16 +134,6 @@ print('Yay, got Wit.ai response: ' + str(resp))
 
 See the [docs](https://wit.ai/docs) for more information.
 
-### .interactive()
-
-Starts an interactive conversation with your bot.
-
-Example:
-```python
-client.interactive()
-```
-
-See the [docs](https://wit.ai/docs) for more information.
 
 ### Logging
 
@@ -152,14 +143,14 @@ You can set your logging level as follows:
 ``` python
 from wit import Wit
 import logging
-client = Wit(token, actions)
+client = Wit(token)
 client.logger.setLevel(logging.WARNING)
 ```
 
 You can also specify a custom logger object in the Wit constructor:
 ``` python
 from wit import Wit
-client = Wit(access_token=access_token, actions=actions, logger=custom_logger)
+client = Wit(access_token=access_token, logger=custom_logger)
 ```
 
 See the [logging module](https://docs.python.org/2/library/logging.html) and

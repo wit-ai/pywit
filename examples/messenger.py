@@ -17,6 +17,11 @@
 # 5. Subscribe your page to the Webhooks using verify_token and `https://<your_host>/webhook` as callback URL.
 # 6. Talk to your bot on Messenger!
 
+from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
+from __future__ import unicode_literals
+
 import os
 import requests
 from sys import argv
