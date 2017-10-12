@@ -19,4 +19,4 @@ actions = {
 }
 
 client = Wit(access_token=access_token, actions=actions)
-client.interactive()
+print(client.message('what is temperature', None, 2, True))
