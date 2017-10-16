@@ -71,10 +71,12 @@ class Wit(object):
             self.logger.error('Stories and POST /converse have been deprecated. This will break in February 2018!')
             self.actions = validate_actions(self.logger, actions)
 
-    def message(self, msg, context=None, verbose=None):
+    def message(self, msg, context=None, n=None, verbose=None):
         params = {}
         if verbose:
-            params['verbose'] = True
+            params['verbose'] = verbose
+        if n is not None:
+            params['n'] = n
         if msg:
             params['q'] = msg
         if context:
