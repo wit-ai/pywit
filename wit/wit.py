@@ -21,7 +21,7 @@ LEARN_MORE = 'Learn more at https://wit.ai/docs/quickstart'
 class WitError(Exception):
     pass
 
-def req(logger, access_token, meth, path, params, **kwargs):
+def req(logger, access_token, meth, path, params, timeout=(3.05, 27), **kwargs):
     full_url = WIT_API_HOST + path
     logger.debug('%s %s %s', meth, full_url, params)
     headers = {
@@ -34,6 +34,7 @@ def req(logger, access_token, meth, path, params, **kwargs):
         full_url,
         headers=headers,
         params=params,
+        timeout=timeout,
         **kwargs
     )
     if rsp.status_code > 200:
