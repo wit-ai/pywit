@@ -127,6 +127,18 @@ class Wit(object):
                 return
             print(self.message(message, context))
 
+    def samples(self, text, entities):
+        """Validate samples (sentence + entities annotations) to train your app programmatically."""
+
+        params = {}
+        data = {
+            'text': text,
+            'entities': entities
+        }
+        resp = req(self.logger, self.access_token, 'POST', '/samples', params,
+                   data=json.dumps([data]))
+        return resp
+
     def converse(self, session_id, message, context=None, reset=None,
                  verbose=None):
         if context is None:
