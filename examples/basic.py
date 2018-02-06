@@ -11,12 +11,5 @@ if len(sys.argv) != 2:
     exit(1)
 access_token = sys.argv[1]
 
-def send(request, response):
-    print(response['text'])
-
-actions = {
-    'send': send,
-}
-
-client = Wit(access_token=access_token, actions=actions)
+client = Wit(access_token=access_token)
 client.interactive()
