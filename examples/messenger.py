@@ -75,9 +75,10 @@ def messenger_post():
                 fb_id = message['sender']['id']
                 # We retrieve the message content
                 text = message['message']['text']
-                # Let's forward the message to the Wit.ai Bot Engine
-                # We handle the response in the function send()
-                client.run_actions(session_id=fb_id, message=text)
+                # Let's forward the message to Wit /message
+                # and customize our response to the message in handle_message
+                response = client.message(msg=text, session_id=fb_id)
+                handle_message(response=response, fb_id=fb_id)
     else:
         # Returned another event
         return 'Received Different Event'
@@ -112,40 +113,24 @@ def first_entity_value(entities, entity):
     return val['value'] if isinstance(val, dict) else val
 
 
-def send(request, response):
+def handle_message(response, fb_id):
     """
-    Sender function
+    Customizes our response to the message and sends it
     """
-    # We use the fb_id as equal to session_id
-    fb_id = request['session_id']
-    text = response['text']
+    entities = response['entities']
+    # Checks if user's message is a greeting
+    # Otherwise we will just repeat what they sent us
+    greetings = first_entity_value(entities, 'greetings')
+    if greetings:
+        text = "hello!"
+    else:
+        text = "We've received your message: " + response['_text']
     # send message
     fb_message(fb_id, text)
 
 
-def get_forecast(request):
-    context = request['context']
-    entities = request['entities']
-    loc = first_entity_value(entities, 'location')
-    if loc:
-        # This is where we could use a weather service api to get the weather.
-        context['forecast'] = 'sunny'
-        if context.get('missingLocation') is not None:
-            del context['missingLocation']
-    else:
-        context['missingLocation'] = True
-        if context.get('forecast') is not None:
-            del context['forecast']
-    return context
-
-# Setup Actions
-actions = {
-    'send': send,
-    'getForecast': get_forecast,
-}
-
 # Setup Wit Client
-client = Wit(access_token=WIT_TOKEN, actions=actions)
+client = Wit(access_token=WIT_TOKEN)
 
 if __name__ == '__main__':
     # Run Server

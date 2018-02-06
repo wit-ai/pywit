@@ -89,51 +89,6 @@ client.interactive()
 
 See the [docs](https://wit.ai/docs) for more information.
 
-### .run_actions()
-
-**DEPRECATED** See [our blog post](https://wit.ai/blog/2017/07/27/sunsetting-stories) for a migration plan.
-
-A higher-level method to the Wit converse API.
-`run_actions` resets the last turn on new messages and errors.
-
-Takes the following parameters:
-* `session_id` - a unique identifier describing the user session
-* `message` - the text received from the user
-* `context` - the dict representing the session state
-* `max_steps` - (optional) the maximum number of actions to execute (defaults to 5)
-* `verbose` - (optional) if set, calls the API with `verbose=true`
-
-Example:
-```python
-session_id = 'my-user-session-42'
-context0 = {}
-context1 = client.run_actions(session_id, 'what is the weather in London?', context0)
-print('The session state is now: ' + str(context1))
-context2 = client.run_actions(session_id, 'and in Brussels?', context1)
-print('The session state is now: ' + str(context2))
-```
-
-### .converse()
-
-**DEPRECATED** See [our blog post](https://wit.ai/blog/2017/07/27/sunsetting-stories) for a migration plan.
-
-The low-level Wit [converse API](https://wit.ai/docs/http/20160330#converse-link).
-
-Takes the following parameters:
-* `session_id` - a unique identifier describing the user session
-* `message` - the text received from the user
-* `context` - the dict representing the session state
-* `reset` - (optional) whether to reset the last turn
-* `verbose` - (optional) if set, sets the API parameter `verbose` to `true`
-
-Example:
-```python
-resp = client.converse('my-user-session-42', 'what is the weather in London?', {})
-print('Yay, got Wit.ai response: ' + str(resp))
-```
-
-See the [docs](https://wit.ai/docs) for more information.
-
 
 ### Logging
 

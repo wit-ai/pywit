@@ -13,7 +13,7 @@ if len(sys.argv) != 2:
 access_token = sys.argv[1]
 
 # Joke example
-# See https://wit.ai/patapizza/example-joke
+# See https://wit.ai/aforaleka/wit-example-joke-bot
 
 all_jokes = {
     'chuck': [
@@ -29,6 +29,7 @@ all_jokes = {
     ],
 }
 
+
 def first_entity_value(entities, entity):
     if entity not in entities:
         return None
@@ -37,38 +38,29 @@ def first_entity_value(entities, entity):
         return None
     return val['value'] if isinstance(val, dict) else val
 
-def send(request, response):
-    print(response['text'])
 
-def merge(request):
-    context = request['context']
-    entities = request['entities']
-
-    if 'joke' in context:
-        del context['joke']
-    category = first_entity_value(entities, 'category')
-    if category:
-        context['cat'] = category
-    sentiment = first_entity_value(entities, 'sentiment')
-    if sentiment:
-        context['ack'] = 'Glad you liked it.' if sentiment == 'positive' else 'Hmm.'
-    elif 'ack' in context:
-        del context['ack']
-    return context
-
-def select_joke(request):
-    context = request['context']
-
-    jokes = all_jokes[context['cat'] or 'default']
+def select_joke(category):
+    jokes = all_jokes[category or 'default']
     shuffle(jokes)
-    context['joke'] = jokes[0]
-    return context
+    return jokes[0]
 
-actions = {
-    'send': send,
-    'merge': merge,
-    'select-joke': select_joke,
-}
 
-client = Wit(access_token=access_token, actions=actions)
-client.interactive()
+def handle_message(response):
+    entities = response['entities']
+    tell_joke = first_entity_value(entities, 'getJoke')
+    greetings = first_entity_value(entities, 'greetings')
+    category = first_entity_value(entities, 'category')
+    sentiment = first_entity_value(entities, 'sentiment')
+
+    if tell_joke:
+        return select_joke(category)
+    elif sentiment:
+        return 'Glad you liked it.' if sentiment == 'positive' else 'Hmm.'
+    elif greetings:
+        return 'Hey this is joke bot :)'
+    else:
+        return "I can tell jokes! Say 'tell me a joke about tech'!"
+
+
+client = Wit(access_token=access_token)
+client.interactive(handle_message=handle_message)
