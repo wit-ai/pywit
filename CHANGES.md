@@ -3,9 +3,8 @@ The most important change is the removal of `.converse()` and `.run_actions()`. 
 
 ### Breaking changes
 
-- `converse` and `runActions` are removed
+- `converse` and `run_actions` are removed
 - updated and added new examples that leverage the /message API
-- updated wit-ai-basic-app-for-tests.zip for testing
 
 ## v4.3.0
 
