@@ -47,12 +47,12 @@ def select_joke(category):
 
 def handle_message(response):
     entities = response['entities']
-    tell_joke = first_entity_value(entities, 'getJoke')
+    get_joke = first_entity_value(entities, 'getJoke')
     greetings = first_entity_value(entities, 'greetings')
     category = first_entity_value(entities, 'category')
     sentiment = first_entity_value(entities, 'sentiment')
 
-    if tell_joke:
+    if get_joke:
         return select_joke(category)
     elif sentiment:
         return 'Glad you liked it.' if sentiment == 'positive' else 'Hmm.'
