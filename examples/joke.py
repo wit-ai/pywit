@@ -17,15 +17,15 @@ access_token = sys.argv[1]
 
 all_jokes = {
     'chuck': [
-        "Chuck Norris counted to infinity - twice.",
-        "Death once had a near-Chuck Norris experience.",
+        'Chuck Norris counted to infinity - twice.',
+        'Death once had a near-Chuck Norris experience.',
     ],
     'tech': [
-        "Did you hear about the two antennas that got married? The ceremony was long and boring, but the reception was great!",
-        "Why do geeks mistake Halloween and Christmas? Because Oct 31 === Dec 25.",
+        'Did you hear about the two antennas that got married? The ceremony was long and boring, but the reception was great!',
+        'Why do geeks mistake Halloween and Christmas? Because Oct 31 === Dec 25.',
     ],
     'default': [
-        "Why was the Math book sad? Because it had so many problems.",
+        'Why was the Math book sad? Because it had so many problems.',
     ],
 }
 
@@ -55,9 +55,9 @@ def handle_message(response):
     if get_joke:
         return select_joke(category)
     elif sentiment:
-        return "Glad you liked it." if sentiment == 'positive' else "Hmm."
+        return 'Glad you liked it.' if sentiment == 'positive' else 'Hmm.'
     elif greetings:
-        return "Hey this is joke bot :)"
+        return 'Hey this is joke bot :)'
     else:
         return 'I can tell jokes! Say "tell me a joke about tech"!'
 
