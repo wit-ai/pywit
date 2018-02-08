@@ -1,3 +1,11 @@
+## v5.0.0
+The most important change is the removal of `.converse()` and `.run_actions()`. Follow the migration tutorial [here](https://github.com/wit-ai/wit-stories-migration-tutorial), or [read more here](https://wit.ai/blog/2017/07/27/sunsetting-stories).
+
+### Breaking changes
+
+- `converse` and `run_actions` are removed
+- updated and added new examples that leverage the /message API
+
 ## v4.3.0
 
 - `message` now takes an optional `context` as second parameter
