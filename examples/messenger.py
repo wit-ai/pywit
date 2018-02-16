@@ -77,7 +77,7 @@ def messenger_post():
                 text = message['message']['text']
                 # Let's forward the message to Wit /message
                 # and customize our response to the message in handle_message
-                response = client.message(msg=text, session_id=fb_id)
+                response = client.message(msg=text, context={'session_id':fb_id})
                 handle_message(response=response, fb_id=fb_id)
     else:
         # Returned another event
