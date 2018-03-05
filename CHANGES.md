@@ -1,3 +1,6 @@
+## v5.1.0
+Passing session_id in context in `messenger.py`
+
 ## v5.0.0
 The most important change is the removal of `.converse()` and `.runActions()`. Follow the migration tutorial [here](https://github.com/wit-ai/wit-stories-migration-tutorial), or [read more here](https://wit.ai/blog/2017/07/27/sunsetting-stories).
 
@@ -5,7 +8,6 @@ The most important change is the removal of `.converse()` and `.runActions()`. F
 
 - `converse` and `runActions` are removed
 - updated and added new examples that leverage the /message API
-- updated wit-ai-basic-app-for-tests.zip for testing
 
 ## v4.3.0
 

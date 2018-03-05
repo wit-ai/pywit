@@ -33,14 +33,17 @@ def handle_message(response):
         # We can call the wikidata API using the wikidata ID for more info
         return wikidata_description(celebrity)
     elif greetings:
-        return "Hi! You can say something like 'Tell me about Beyonce'"
+        return 'Hi! You can say something like "Tell me about Beyonce"'
     else:
         return "Um. I don't recognize that name. " \
                 "Which celebrity do you want to learn about?"
 
 
 def wikidata_description(celebrity):
-    wikidata_id = celebrity['external']['wikidata']
+    try:
+        wikidata_id = celebrity['external']['wikidata']
+    except KeyError:
+        return 'I recognize %s' % celebrity['name']
     rsp = get('https://www.wikidata.org/w/api.php', {
         'ids': wikidata_id,
         'action': 'wbgetentities',
