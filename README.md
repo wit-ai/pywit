@@ -110,3 +110,8 @@ client = Wit(access_token=access_token, logger=custom_logger)
 
 See the [logging module](https://docs.python.org/2/library/logging.html) and
 [logging.config](https://docs.python.org/2/library/logging.config.html#module-logging.config) docs for more information.
+
+
+## License
+
+The license for pywit can be found in LICENSE file in the root directory of this source tree.
