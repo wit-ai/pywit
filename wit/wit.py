@@ -38,9 +38,9 @@ def req(logger, access_token, meth, path, params, **kwargs):
         params=params,
         **kwargs
     )
-    if rsp.status_code > 200:
-        raise WitError('Wit responded with status: ' + str(rsp.status_code) +
-                       ' (' + rsp.reason + ')')
+    #if rsp.status_code > 200:
+    #    raise WitError('Wit responded with status: ' + str(rsp.status_code) +
+    #                   ' (' + rsp.reason + ')')
     json = rsp.json()
     if 'error' in json:
         raise WitError('Wit responded with an error: ' + json['error'])
