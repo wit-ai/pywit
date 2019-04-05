@@ -69,7 +69,7 @@ class Wit(object):
             params['context'] = json.dumps(context)
         resp = req(self.logger, self.access_token, 'GET', '/message', params)
         return resp
-    def new_samples(self, text,entities,*args):
+    def post_samples(self, text,entities,*args):
         """  Validate samples (sentence + entities annotations) to train your app programmatically.
         Each entity in entities list should be like this:
         
@@ -124,7 +124,7 @@ class Wit(object):
             params['negative'] = negative
         resp = req(self.logger, self.access_token, 'GET', '/samples', params)
         return resp
-    def new_app(self, name, lang, private, desc=None):
+    def post_app(self, name, lang, private, desc=None):
         """Creates a new app for an existing user.
         :param name: Name of the new app.
         :param lang: Language code (ISO alpha-2 code) e.g : "en". 
