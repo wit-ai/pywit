@@ -99,8 +99,7 @@ class Wit(object):
             while x<len(args):
                 data.append({'text': args[x],'entities': args[x+1]})
                 x+=2
-        resp = req(self.logger, self.access_token, 'POST', '/samples', params,data=json.dumps(data))
-        return resp
+        return req(self.logger, self.access_token, 'POST', '/samples', params,data=json.dumps(data))
     def get_samples(self, limit, offset=None, entity_ids=None, entity_values=None, negative=None):
         """Return a list of Samples.
         
@@ -122,8 +121,7 @@ class Wit(object):
             params['entity_values'] = negative
         if negative:
             params['negative'] = negative
-        resp = req(self.logger, self.access_token, 'GET', '/samples', params)
-        return resp
+        return req(self.logger, self.access_token, 'GET', '/samples', params)
     def post_app(self, name, lang, private, desc=None):
         """Creates a new app for an existing user.
         :param name: Name of the new app.
@@ -137,8 +135,7 @@ class Wit(object):
             data = {'name': name,'lang': lang,'private': str(private).lower()}
         if desc:
             data['desc'] = desc
-        resp = req(self.logger, self.access_token, 'POST', '/apps', params,data=json.dumps(data))
-        return resp
+        return req(self.logger, self.access_token, 'POST', '/apps', params,data=json.dumps(data))
     def get_apps(self, limit, offset=None):
         """Returns an array of all apps that you own.
         NOTE: Does not return shared apps.
@@ -152,8 +149,7 @@ class Wit(object):
             params['limit'] = limit
         if offset:
             params['offset'] = offset
-        resp = req(self.logger, self.access_token, 'GET', '/apps', params)
-        return resp
+        return req(self.logger, self.access_token, 'GET', '/apps', params)
     def update_app(self, app_id, name=None, lang=None, private=None, timezone=None, desc=None):
         """Updates an app with the given attributes.
         
@@ -176,16 +172,14 @@ class Wit(object):
             data['timezone'] = timezone
         if desc:
             data['desc'] = desc
-        resp = req(self.logger, self.access_token, 'PUT', '/apps/'+app_id, params,data=json.dumps(data))
-        return resp
+        return req(self.logger, self.access_token, 'PUT', '/apps/'+app_id, params,data=json.dumps(data))
     def get_app(self, app_id):
         """Returns a map representation of the specified app.
         
         :param app_id: The ID of the app you want to information about.
         
         :return: Information about the requested app."""
-        resp = req(self.logger, self.access_token, 'GET', '/apps/'+app_id, {})
-        return resp
+        return req(self.logger, self.access_token, 'GET', '/apps/'+app_id, {})
     def delete_app(self, app_id):
         """Permanently delete the app.
         NOTE: You must be the creator of the app to be able to delete it.
@@ -193,8 +187,7 @@ class Wit(object):
         :param app_id: ID of the want-to-be deleted app.
         
         :return: Dictionary with a boolean that represents the success of the operation ['success']."""
-        resp = req(self.logger, self.access_token, 'DELETE', '/apps/'+app_id, {})
-        return resp
+        return req(self.logger, self.access_token, 'DELETE', '/apps/'+app_id, {})
     def speech(self, audio_file, verbose=None, headers=None):
         """ Sends an audio file to the /speech API.
         Uses the streaming feature of requests (see `req`), so opening the file
