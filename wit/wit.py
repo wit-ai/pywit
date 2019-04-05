@@ -69,7 +69,8 @@ class Wit(object):
             params['context'] = json.dumps(context)
         resp = req(self.logger, self.access_token, 'GET', '/message', params)
         return resp
-    def post_samples(self, text,entities,*args):
+    
+    def post_samples(self, text, entities, *args):
         """  Validate samples (sentence + entities annotations) to train your app programmatically.
         Each entity in entities list should be like this:
         
@@ -100,6 +101,7 @@ class Wit(object):
                 data.append({'text': args[x],'entities': args[x+1]})
                 x+=2
         return req(self.logger, self.access_token, 'POST', '/samples', params,data=json.dumps(data))
+    
     def get_samples(self, limit, offset=None, entity_ids=None, entity_values=None, negative=None):
         """Return a list of Samples.
         
@@ -122,6 +124,7 @@ class Wit(object):
         if negative:
             params['negative'] = negative
         return req(self.logger, self.access_token, 'GET', '/samples', params)
+    
     def post_app(self, name, lang, private, desc=None):
         """Creates a new app for an existing user.
         :param name: Name of the new app.
@@ -136,6 +139,7 @@ class Wit(object):
         if desc:
             data['desc'] = desc
         return req(self.logger, self.access_token, 'POST', '/apps', params,data=json.dumps(data))
+    
     def get_apps(self, limit, offset=None):
         """Returns an array of all apps that you own.
         NOTE: Does not return shared apps.
@@ -150,6 +154,7 @@ class Wit(object):
         if offset:
             params['offset'] = offset
         return req(self.logger, self.access_token, 'GET', '/apps', params)
+    
     def update_app(self, app_id, name=None, lang=None, private=None, timezone=None, desc=None):
         """Updates an app with the given attributes.
         
@@ -173,6 +178,7 @@ class Wit(object):
         if desc:
             data['desc'] = desc
         return req(self.logger, self.access_token, 'PUT', '/apps/'+app_id, params,data=json.dumps(data))
+    
     def get_app(self, app_id):
         """Returns a map representation of the specified app.
         
@@ -180,6 +186,7 @@ class Wit(object):
         
         :return: Information about the requested app."""
         return req(self.logger, self.access_token, 'GET', '/apps/'+app_id, {})
+    
     def delete_app(self, app_id):
         """Permanently delete the app.
         NOTE: You must be the creator of the app to be able to delete it.
@@ -188,25 +195,6 @@ class Wit(object):
         
         :return: Dictionary with a boolean that represents the success of the operation ['success']."""
         return req(self.logger, self.access_token, 'DELETE', '/apps/'+app_id, {})
-    def speech(self, audio_file, verbose=None, headers=None):
-        """ Sends an audio file to the /speech API.
-        Uses the streaming feature of requests (see `req`), so opening the file
-        in binary mode is strongly reccomended (see
-        http://docs.python-requests.org/en/master/user/advanced/#streaming-uploads).
-        Add Content-Type header as specified here: https://wit.ai/docs/http/20160526#post--speech-link
-
-        :param audio_file: an open handler to an audio file
-        :param verbose:
-        :param headers: an optional dictionary with request headers
-        :return:
-        """
-        params = {}
-        headers = headers or {}
-        if verbose:
-            params['verbose'] = True
-        resp = req(self.logger, self.access_token, 'POST', '/speech', params,
-                   data=audio_file, headers=headers)
-        return resp
 
     def speech(self, audio_file, verbose=None, headers=None):
         """ Sends an audio file to the /speech API.
