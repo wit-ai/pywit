@@ -57,7 +57,7 @@ class Wit(object):
         self.access_token = access_token
         self.logger = logger or logging.getLogger(__name__)
 
-    def message(self, msg, context=None, n=None, verbose=None):
+    def message(self, msg, context=None, n=None, verbose=None, thread_id=None):
         params = {}
         if verbose:
             params['verbose'] = verbose
@@ -67,10 +67,12 @@ class Wit(object):
             params['q'] = msg
         if context:
             params['context'] = json.dumps(context)
+        if thread_id:
+            params['thread_id'] = thread_id
         resp = req(self.logger, self.access_token, 'GET', '/message', params)
         return resp
 
-    def speech(self, audio_file, verbose=None, headers=None):
+    def speech(self, audio_file, verbose=None, headers=None, thread_id=None):
         """ Sends an audio file to the /speech API.
         Uses the streaming feature of requests (see `req`), so opening the file
         in binary mode is strongly reccomended (see
@@ -86,6 +88,8 @@ class Wit(object):
         headers = headers or {}
         if verbose:
             params['verbose'] = True
+        if thread_id:
+            params['thread_id'] = thread_id
         resp = req(self.logger, self.access_token, 'POST', '/speech', params,
                    data=audio_file, headers=headers)
         return resp
