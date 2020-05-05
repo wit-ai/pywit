@@ -115,3 +115,13 @@ See the [logging module](https://docs.python.org/2/library/logging.html) and
 ## License
 
 The license for pywit can be found in LICENSE file in the root directory of this source tree.
+
+
+## Terms of Use
+
+Our terms of use can be found at https://opensource.facebook.com/legal/terms.
+
+
+## Privacy Policy
+
+Our privacy policy can be found at https://opensource.facebook.com/legal/privacy.
