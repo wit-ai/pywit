@@ -23,14 +23,14 @@ See the `examples` folder for examples.
 
 ### Versioning
 
-The default API version is `20160516`.
+The default API version is `20200513`.
 You can target a specific version by setting the env variable `WIT_API_VERSION`.
 
 ### Overview
 
 `pywit` provides a Wit class with the following methods:
-* `message` - the Wit [message API](https://wit.ai/docs/http/20160330#get-intent-via-text-link)
-* `speech` - the Wit [speech API](https://wit.ai/docs/http/20160526#post--speech-link)
+* `message` - the Wit [message API](https://wit.ai/docs/http/20200513#get-intent-via-text-link)
+* `speech` - the Wit [speech API](https://wit.ai/docs/http/20200513#post--speech-link)
 * `interactive` - starts an interactive conversation with your bot
 
 ### Wit class
@@ -49,11 +49,10 @@ client.message('set an alarm tomorrow at 7am')
 
 ### .message()
 
-The Wit [message API](https://wit.ai/docs/http/20160330#get-intent-via-text-link).
+The Wit [message API](https://wit.ai/docs/http/20200513#get-intent-via-text-link).
 
 Takes the following parameters:
 * `msg` - the text you want Wit.ai to extract the information from
-* `verbose` - (optional) if set, calls the API with `verbose=true`
 
 Example:
 ```python
@@ -63,18 +62,17 @@ print('Yay, got Wit.ai response: ' + str(resp))
 
 ### .speech()
 
-The Wit [speech API](https://wit.ai/docs/http/20160526#post--speech-link).
+The Wit [speech API](https://wit.ai/docs/http/20200513#post--speech-link).
 
 Takes the following parameters:
 * `audio_file` - a file handler opened in binary mode
-* `verbose` - (optional) if set, calls the API with `verbose=true`
 * `headers` - (optional) the dict of headers (e.g. "Content-Type")
 
 Example:
 ```python
 resp = None
 with open('test.wav', 'rb') as f:
-  resp = client.speech(f, None, {'Content-Type': 'audio/wav'})
+  resp = client.speech(f, {'Content-Type': 'audio/wav'})
 print('Yay, got Wit.ai response: ' + str(resp))
 ```
 

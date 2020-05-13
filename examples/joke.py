@@ -15,7 +15,7 @@ if len(sys.argv) != 2:
 access_token = sys.argv[1]
 
 # Joke example
-# See https://wit.ai/aforaleka/wit-example-joke-bot
+# See https://wit.ai/aleka/wit-example-joke-bot
 
 all_jokes = {
     'chuck': [
@@ -32,13 +32,13 @@ all_jokes = {
 }
 
 
-def first_entity_value(entities, entity):
-    if entity not in entities:
+def first_value(obj, key):
+    if key not in obj:
         return None
-    val = entities[entity][0]['value']
+    val = obj[key][0]['value']
     if not val:
         return None
-    return val['value'] if isinstance(val, dict) else val
+    return val
 
 
 def select_joke(category):
@@ -48,11 +48,11 @@ def select_joke(category):
 
 
 def handle_message(response):
-    entities = response['entities']
-    get_joke = first_entity_value(entities, 'getJoke')
-    greetings = first_entity_value(entities, 'greetings')
-    category = first_entity_value(entities, 'category')
-    sentiment = first_entity_value(entities, 'sentiment')
+    traits = response['traits']
+    get_joke = first_value(traits, 'getJoke')
+    greetings = first_value(traits, 'wit$greetings')
+    category = first_value(response['entities'], 'category:category')
+    sentiment = first_value(traits, 'wit$sentiment')
 
     if get_joke:
         return select_joke(category)

@@ -102,26 +102,25 @@ def fb_message(sender_id, text):
     return resp.content
 
 
-def first_entity_value(entities, entity):
+def first_trait_value(traits, trait):
     """
-    Returns first entity value
+    Returns first trait value
     """
-    if entity not in entities:
+    if trait not in traits:
         return None
-    val = entities[entity][0]['value']
+    val = traits[trait][0]['value']
     if not val:
         return None
-    return val['value'] if isinstance(val, dict) else val
+    return val
 
 
 def handle_message(response, fb_id):
     """
     Customizes our response to the message and sends it
     """
-    entities = response['entities']
     # Checks if user's message is a greeting
     # Otherwise we will just repeat what they sent us
-    greetings = first_entity_value(entities, 'greetings')
+    greetings = first_trait_value(response['traits'], 'wit$greetings')
     if greetings:
         text = "hello!"
     else:

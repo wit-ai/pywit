@@ -13,8 +13,7 @@ from prompt_toolkit import prompt
 from prompt_toolkit.history import InMemoryHistory
 
 WIT_API_HOST = os.getenv('WIT_URL', 'https://api.wit.ai')
-WIT_API_VERSION = os.getenv('WIT_API_VERSION', '20160516')
-DEFAULT_MAX_STEPS = 5
+WIT_API_VERSION = os.getenv('WIT_API_VERSION', '20200513')
 INTERACTIVE_PROMPT = '> '
 LEARN_MORE = 'Learn more at https://wit.ai/docs/quickstart'
 
@@ -57,39 +56,35 @@ class Wit(object):
         self.access_token = access_token
         self.logger = logger or logging.getLogger(__name__)
 
-    def message(self, msg, context=None, n=None, verbose=None, thread_id=None):
+    def message(self, msg, context=None, n=None, verbose=None):
         params = {}
-        if verbose:
-            params['verbose'] = verbose
         if n is not None:
             params['n'] = n
         if msg:
             params['q'] = msg
         if context:
             params['context'] = json.dumps(context)
-        if thread_id:
-            params['thread_id'] = thread_id
+        if verbose:
+            params['verbose'] = verbose
         resp = req(self.logger, self.access_token, 'GET', '/message', params)
         return resp
 
-    def speech(self, audio_file, verbose=None, headers=None, thread_id=None):
+    def speech(self, audio_file, headers=None, verbose=None):
         """ Sends an audio file to the /speech API.
         Uses the streaming feature of requests (see `req`), so opening the file
         in binary mode is strongly reccomended (see
         http://docs.python-requests.org/en/master/user/advanced/#streaming-uploads).
-        Add Content-Type header as specified here: https://wit.ai/docs/http/20160526#post--speech-link
+        Add Content-Type header as specified here: https://wit.ai/docs/http/20200513#post--speech-link
 
         :param audio_file: an open handler to an audio file
-        :param verbose:
         :param headers: an optional dictionary with request headers
+        :param verbose: for legacy versions, get extra information
         :return:
         """
         params = {}
         headers = headers or {}
         if verbose:
             params['verbose'] = True
-        if thread_id:
-            params['thread_id'] = thread_id
         resp = req(self.logger, self.access_token, 'POST', '/speech', params,
                    data=audio_file, headers=headers)
         return resp

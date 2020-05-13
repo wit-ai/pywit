@@ -15,22 +15,32 @@ if len(sys.argv) != 2:
 access_token = sys.argv[1]
 
 # Celebrities example
-# See https://wit.ai/aforaleka/wit-example-celebrities/
+# See https://wit.ai/aleka/wit-example-celebrities/
 
 
-def first_entity_value(entities, entity):
+def first_entity_resolved_value(entities, entity):
     if entity not in entities:
         return None
-    val = entities[entity][0]['value']
+    val = entities[entity][0];
+    if 'resolved' not in val:
+        return None
+    val = val['resolved']['values'][0]
     if not val:
         return None
     return val
 
 
+def first_trait_value(traits, trait):
+    if trait not in traits:
+        return None
+    val = traits[trait][0]['value']
+    if not val:
+        return None
+    return val
+
 def handle_message(response):
-    entities = response['entities']
-    greetings = first_entity_value(entities, 'greetings')
-    celebrity = first_entity_value(entities, 'notable_person')
+    greetings = first_trait_value(response['traits'], 'wit$greetings')
+    celebrity = first_entity_resolved_value(response['entities'], 'wit$notable_person')
     if celebrity:
         # We can call the wikidata API using the wikidata ID for more info
         return wikidata_description(celebrity)
