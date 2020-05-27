@@ -1,3 +1,7 @@
+## v6.0.0
+Upgrading to latest API version!
+Check it out: [`20200513`](https://wit.ai/docs/http/20200513#get__message_link).
+
 ## v5.1.0
 Added `session_id` to context in `messenger.py` (thanks @davidawad)
 
