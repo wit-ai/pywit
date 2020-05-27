@@ -40,7 +40,7 @@ def first_trait_value(traits, trait):
 
 def handle_message(response):
     greetings = first_trait_value(response['traits'], 'wit$greetings')
-    celebrity = first_entity_resolved_value(response['entities'], 'wit$notable_person')
+    celebrity = first_entity_resolved_value(response['entities'], 'wit$notable_person:notable_person')
     if celebrity:
         # We can call the wikidata API using the wikidata ID for more info
         return wikidata_description(celebrity)
