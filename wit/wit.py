@@ -72,7 +72,7 @@ class Wit(object):
     def speech(self, audio_file, headers=None, verbose=None):
         """ Sends an audio file to the /speech API.
         Uses the streaming feature of requests (see `req`), so opening the file
-        in binary mode is strongly reccomended (see
+        in binary mode is strongly recommended (see
         http://docs.python-requests.org/en/master/user/advanced/#streaming-uploads).
         Add Content-Type header as specified here: https://wit.ai/docs/http/20200513#post--speech-link
 
