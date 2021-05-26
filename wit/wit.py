@@ -110,10 +110,14 @@ class Wit(object):
             else:
                 print(handle_message(self.message(message, context)))
 
-    def intent_list(self):
+        def intent_list(self, headers=None, verbose=None):
         """
         Returns names of all intents associated with your app.
         """
         params = {}
-        resp = req(self.logger, self.access_token, 'GET', '/intents', params)
-        return resp            
+        headers = headers or {}
+        if verbose:
+            params['verbose'] = True
+        resp = req(self.logger, self.access_token, 'GET', '/intents', params, headers=headers)
+        return resp 
+           
