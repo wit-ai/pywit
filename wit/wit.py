@@ -110,7 +110,7 @@ class Wit(object):
             else:
                 print(handle_message(self.message(message, context)))
 
-        def intent_list(self, headers=None, verbose=None):
+    def intent_list(self, headers=None, verbose=None):
         """
         Returns names of all intents associated with your app.
         """
@@ -120,4 +120,32 @@ class Wit(object):
             params['verbose'] = True
         resp = req(self.logger, self.access_token, 'GET', '/intents', params, headers=headers)
         return resp 
-           
+    
+    def detect_language(self, msg, n=None, headers=None, verbose=None):
+        """
+        Returns the list of the top detected locales for the text message.
+        """
+        params = {}
+        headers = headers or {}
+        if msg:
+            params['q'] = msg
+        if verbose:
+            params['verbose'] = True
+        if n is not None:
+            params['n'] = n    
+        resp = req(self.logger, self.access_token, 'GET', '/language', params, headers=headers)
+        return resp    
+
+    def intent_info(self, intent_name, headers=None, verbose=None):
+        """
+        Returns all available information about an intent.
+
+        :param intent_name: name of existing intent
+        """
+        params = {}
+        headers = headers or {}
+        if verbose:
+            params['verbose'] = True
+        endpoint = '/intents/' + intent_name    
+        resp = req(self.logger, self.access_token, 'GET', endpoint, params, headers=headers)
+        return resp        
