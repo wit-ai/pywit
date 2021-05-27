@@ -110,7 +110,7 @@ class Wit(object):
             else:
                 print(handle_message(self.message(message, context)))
 
-        def intent_list(self, headers=None, verbose=None):
+    def intent_list(self, headers=None, verbose=None):
         """
         Returns names of all intents associated with your app.
         """
