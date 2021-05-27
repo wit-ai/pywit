@@ -134,4 +134,16 @@ class Wit(object):
         if n is not None:
             params['n'] = n    
         resp = req(self.logger, self.access_token, 'GET', '/language', params, headers=headers)
-        return resp       
+        return resp    
+
+    def intent_info(self, intent_name, headers=None, verbose=None):
+        """
+        Returns all available information about an intent.
+        """
+        params = {}
+        headers = headers or {}
+        if verbose:
+            params['verbose'] = True
+        endpoint = '/intents/' + intent_name    
+        resp = req(self.logger, self.access_token, 'GET', endpoint, params, headers=headers)
+        return resp        
