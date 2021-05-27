@@ -139,6 +139,8 @@ class Wit(object):
     def intent_info(self, intent_name, headers=None, verbose=None):
         """
         Returns all available information about an intent.
+
+        :param intent_name: name of existing intent
         """
         params = {}
         headers = headers or {}
