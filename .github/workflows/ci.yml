@@ -1,11 +1,11 @@
-name: wit
+name: wit-ci
 
 on: [push]
 
 jobs:
   build:
 
-    runs-on: [ubuntu-latest, windows-latest, macOS-latest]
+    runs-on: ubuntu-latest
     strategy:
       matrix:
         python-version: [2.7, 3.5, 3.6, 3.7, 3.8]
