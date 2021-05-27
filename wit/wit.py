@@ -120,4 +120,18 @@ class Wit(object):
             params['verbose'] = True
         resp = req(self.logger, self.access_token, 'GET', '/intents', params, headers=headers)
         return resp 
-           
+    
+    def detect_language(self, msg, n=None, headers=None, verbose=None):
+        """
+        Returns the list of the top detected locales for the text message.
+        """
+        params = {}
+        headers = headers or {}
+        if msg:
+            params['q'] = msg
+        if verbose:
+            params['verbose'] = True
+        if n is not None:
+            params['n'] = n    
+        resp = req(self.logger, self.access_token, 'GET', '/language', params, headers=headers)
+        return resp       
