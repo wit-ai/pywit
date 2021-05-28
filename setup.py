@@ -2,6 +2,7 @@
 
 import os
 import sys
+import warnings
 
 try:
     from setuptools import setup
