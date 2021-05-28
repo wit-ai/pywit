@@ -173,5 +173,16 @@ class Wit(object):
             params['verbose'] = True
         endpoint = '/entities/' + entity_name    
         resp = req(self.logger, self.access_token, 'GET', endpoint, params, headers=headers)
-        return resp                 
-            
+        return resp
+
+    def trait_list(self, headers=None, verbose=None):
+    	"""
+    	Returns list of all traits associated with your app.
+    	"""
+    	params = {}
+    	headers = headers or {}
+    	if verbose:
+    		params['verbose'] = True
+    	resp = req(self.logger, self.access_token, 'GET', '/traits', params, headers=headers)
+    	return resp	
+	    
