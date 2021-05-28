@@ -159,5 +159,19 @@ class Wit(object):
         if verbose:
             params['verbose'] = True
         resp = req(self.logger, self.access_token, 'GET', '/entities', params, headers=headers)
-        return resp             
+        return resp
+
+    def entity_info(self, entity_name, headers=None, verbose=None):
+        """
+        Returns all available information about an entity.
+
+        :param entity_name: name of existing entity
+        """
+        params = {}
+        headers = headers or {}
+        if verbose:
+            params['verbose'] = True
+        endpoint = '/entities/' + entity_name    
+        resp = req(self.logger, self.access_token, 'GET', endpoint, params, headers=headers)
+        return resp                 
             
