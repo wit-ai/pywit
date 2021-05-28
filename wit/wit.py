@@ -184,5 +184,19 @@ class Wit(object):
     	if verbose:
     		params['verbose'] = True
     	resp = req(self.logger, self.access_token, 'GET', '/traits', params, headers=headers)
-    	return resp	
+    	return resp
+
+    def trait_info(self, trait_name, headers=None, verbose=None):
+        """
+        Returns all available information about a trait.
+
+        :param trait_name: name of existing trait
+        """
+        params = {}
+        headers = headers or {}
+        if verbose:
+            params['verbose'] = True
+        endpoint = '/traits/' + trait_name    
+        resp = req(self.logger, self.access_token, 'GET', endpoint, params, headers=headers)
+        return resp		
 	    
