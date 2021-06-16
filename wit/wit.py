@@ -148,4 +148,15 @@ class Wit(object):
             params['verbose'] = True
         endpoint = '/intents/' + intent_name    
         resp = req(self.logger, self.access_token, 'GET', endpoint, params, headers=headers)
-        return resp        
+        return resp
+
+    def entity_list(self, headers=None, verbose=None):
+        """
+        Returns list of all entities associated with your app.
+        """
+        params = {}
+        headers = headers or {}
+        if verbose:
+            params['verbose'] = True
+        resp = req(self.logger, self.access_token, 'GET', '/entities', params, headers=headers)
+        return resp                         
