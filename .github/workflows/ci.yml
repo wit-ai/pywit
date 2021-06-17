@@ -1,6 +1,6 @@
 name: wit-ci
 
-on: [push]
+on: [push, pull_request]
 
 jobs:
   build:
