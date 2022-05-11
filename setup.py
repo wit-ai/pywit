@@ -14,7 +14,7 @@ try:
 except ImportError:
     from distutils.command.build_py import build_py
 
-install_requires = ['prompt_toolkit']
+install_requires = ['prompt_toolkit>=1.0.15,<2.0.0']
 if sys.version_info < (2, 6):
     warnings.warn(
         'Python 2.5 is no longer officially supported by Wit. '
