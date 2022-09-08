@@ -1,12 +1,10 @@
 # Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
 
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
-from __future__ import unicode_literals
+from __future__ import absolute_import, division, print_function, unicode_literals
+
+import logging
 
 import sys
-import logging
 
 from .wit import Wit
 
@@ -14,7 +12,7 @@ from .wit import Wit
 # logging config to override defaults specified here
 logging.getLogger(__name__).setLevel(logging.INFO)
 logging.getLogger(__name__).propagate = False
-formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
 handler = logging.StreamHandler(stream=sys.stdout)
 handler.setFormatter(formatter)
 logging.getLogger(__name__).addHandler(handler)

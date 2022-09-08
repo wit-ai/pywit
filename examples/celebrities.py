@@ -1,16 +1,14 @@
 # Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
 
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
-from __future__ import unicode_literals
+from __future__ import absolute_import, division, print_function, unicode_literals
 
 import sys
+
 from requests import get
 from wit import Wit
 
 if len(sys.argv) != 2:
-    print('usage: python ' + sys.argv[0] + ' <wit-token>')
+    print("usage: python " + sys.argv[0] + " <wit-token>")
     exit(1)
 access_token = sys.argv[1]
 
@@ -21,10 +19,10 @@ access_token = sys.argv[1]
 def first_entity_resolved_value(entities, entity):
     if entity not in entities:
         return None
-    val = entities[entity][0];
-    if 'resolved' not in val:
+    val = entities[entity][0]
+    if "resolved" not in val:
         return None
-    val = val['resolved']['values'][0]
+    val = val["resolved"]["values"][0]
     if not val:
         return None
     return val
@@ -33,38 +31,46 @@ def first_entity_resolved_value(entities, entity):
 def first_trait_value(traits, trait):
     if trait not in traits:
         return None
-    val = traits[trait][0]['value']
+    val = traits[trait][0]["value"]
     if not val:
         return None
     return val
 
+
 def handle_message(response):
-    greetings = first_trait_value(response['traits'], 'wit$greetings')
-    celebrity = first_entity_resolved_value(response['entities'], 'wit$notable_person:notable_person')
+    greetings = first_trait_value(response["traits"], "wit$greetings")
+    celebrity = first_entity_resolved_value(
+        response["entities"], "wit$notable_person:notable_person"
+    )
     if celebrity:
         # We can call the wikidata API using the wikidata ID for more info
         return wikidata_description(celebrity)
     elif greetings:
         return 'Hi! You can say something like "Tell me about Beyonce"'
     else:
-        return "Um. I don't recognize that name. " \
-                "Which celebrity do you want to learn about?"
+        return (
+            "Um. I don't recognize that name. "
+            "Which celebrity do you want to learn about?"
+        )
 
 
 def wikidata_description(celebrity):
     try:
-        wikidata_id = celebrity['external']['wikidata']
+        wikidata_id = celebrity["external"]["wikidata"]
     except KeyError:
-        return 'I recognize %s' % celebrity['name']
-    rsp = get('https://www.wikidata.org/w/api.php', {
-        'ids': wikidata_id,
-        'action': 'wbgetentities',
-        'props': 'descriptions',
-        'format': 'json',
-        'languages': 'en'
-    }).json()
-    description = rsp['entities'][wikidata_id]['descriptions']['en']['value']
-    return 'ooo yes I know %s -- %s' % (celebrity['name'], description)
+        return "I recognize %s" % celebrity["name"]
+    rsp = get(
+        "https://www.wikidata.org/w/api.php",
+        {
+            "ids": wikidata_id,
+            "action": "wbgetentities",
+            "props": "descriptions",
+            "format": "json",
+            "languages": "en",
+        },
+    ).json()
+    description = rsp["entities"][wikidata_id]["descriptions"]["en"]["value"]
+    return "ooo yes I know %s -- %s" % (celebrity["name"], description)
 
 
 client = Wit(access_token=access_token)
