@@ -54,7 +54,7 @@ class Wit(object):
         self.access_token = access_token
         self.logger = logger or logging.getLogger(__name__)
 
-    def message(self, msg, context=None, n=None, verbose=None):
+    def message(self, msg, context=None, n=None, verbose=None, tag=None):
         params = {}
         if n is not None:
             params["n"] = n
@@ -64,6 +64,8 @@ class Wit(object):
             params["context"] = json.dumps(context)
         if verbose:
             params["verbose"] = verbose
+        if tag:
+            params["tag"] = tag
         resp = req(self.logger, self.access_token, "GET", "/message", params)
         return resp
 
