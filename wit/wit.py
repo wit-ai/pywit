@@ -12,7 +12,7 @@ from prompt_toolkit import prompt
 from prompt_toolkit.history import InMemoryHistory
 
 WIT_API_HOST = os.getenv("WIT_URL", "https://api.wit.ai")
-WIT_API_VERSION = os.getenv("WIT_API_VERSION", "20200513")
+WIT_API_VERSION = os.getenv("WIT_API_VERSION", "20220622")
 INTERACTIVE_PROMPT = "> "
 LEARN_MORE = "Learn more at https://wit.ai/docs/quickstart"
 
@@ -29,7 +29,8 @@ def req(logger, access_token, meth, path, params, **kwargs):
         "accept": "application/vnd.wit." + WIT_API_VERSION + "+json",
     }
     headers.update(kwargs.pop("headers", {}))
-    rsp = requests.request(meth, full_url, headers=headers, params=params, **kwargs)
+    rsp = requests.request(
+        meth, full_url, headers=headers, params=params, **kwargs)
     if rsp.status_code > 200:
         raise WitError(
             "Wit responded with status: "
@@ -72,7 +73,7 @@ class Wit(object):
         Uses the streaming feature of requests (see `req`), so opening the file
         in binary mode is strongly recommended (see
         http://docs.python-requests.org/en/master/user/advanced/#streaming-uploads).
-        Add Content-Type header as specified here: https://wit.ai/docs/http/20200513#post--speech-link
+        Add Content-Type header as specified here: https://wit.ai/docs/http/20220622#post--speech-link
 
         :param audio_file: an open handler to an audio file
         :param headers: an optional dictionary with request headers
@@ -88,6 +89,33 @@ class Wit(object):
             self.access_token,
             "POST",
             "/speech",
+            params,
+            data=audio_file,
+            headers=headers,
+        )
+        return resp
+
+    def dictation(self, audio_file, headers=None, verbose=None):
+        """Sends an audio file to the /dictation API.
+        Uses the streaming feature of requests (see `req`), so opening the file
+        in binary mode is strongly recommended (see
+        http://docs.python-requests.org/en/master/user/advanced/#streaming-uploads).
+        Add Content-Type header as specified here: https://wit.ai/docs/http/20220622/#post__dictation_link
+
+        :param audio_file: an open handler to an audio file
+        :param headers: an optional dictionary with request headers
+        :param verbose: for legacy versions, get extra information
+        :return:
+        """
+        params = {}
+        headers = headers or {}
+        if verbose:
+            params["verbose"] = True
+        resp = req(
+            self.logger,
+            self.access_token,
+            "POST",
+            "/dictation",
             params,
             data=audio_file,
             headers=headers,
@@ -381,7 +409,8 @@ class Wit(object):
             params["intents"] = intents
         if verbose:
             params["verbose"] = verbose
-        resp = req(self.logger, self.access_token, "GET", "/utterances", params)
+        resp = req(self.logger, self.access_token,
+                   "GET", "/utterances", params)
         return resp
 
     def delete_utterances(self, utterances, headers=None, verbose=None):
@@ -486,7 +515,8 @@ class Wit(object):
         if verbose:
             params["verbose"] = True
         endpoint = (
-            "/apps/" + urllib.quote_plus(app_id) + "/tags/" + urllib.quote_plus(tag_id)
+            "/apps/" + urllib.quote_plus(app_id) +
+            "/tags/" + urllib.quote_plus(tag_id)
         )
         resp = req(
             self.logger, self.access_token, "GET", endpoint, params, headers=headers

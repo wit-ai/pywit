@@ -1,3 +1,6 @@
+## v6.0.2
+Upgrading to latest API version + added ``/dictation`` endpoint
+Check it out: [`20220622`](https://wit.ai/docs/http/20220622#get__message_link).
 ## v6.0.1
 Added encoding for special characters in url param strings
 

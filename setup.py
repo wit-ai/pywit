@@ -35,7 +35,7 @@ if sys.version_info < (3, 0):
 
 setup(
     name="wit",
-    version="6.0.1",
+    version="6.0.2",
     description="Wit SDK for Python",
     author="The Wit Team",
     author_email="help@wit.ai",
