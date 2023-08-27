@@ -46,7 +46,7 @@ def req(logger, access_token, meth, path, params, **kwargs):
     return json
 
 
-class Wit(object):
+class Wit:
     access_token = None
     _sessions = {}
 
