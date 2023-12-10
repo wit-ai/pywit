@@ -12,6 +12,7 @@ pip install wit
 From source:
 ```bash
 git clone https://github.com/wit-ai/pywit
+cd pywit
 pip install .
 ```
 
