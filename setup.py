@@ -27,12 +27,6 @@ if sys.version_info < (2, 6):
 else:
     install_requires.append("requests >= 0.8.8")
 
-if sys.version_info < (3, 0):
-    try:
-        from util import json
-    except ImportError:
-        install_requires.append("simplejson")
-
 setup(
     name="wit",
     version="6.0.1",

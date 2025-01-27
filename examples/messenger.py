@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# coding:utf-8
 # Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
 
 # Messenger API integration example
@@ -18,7 +17,6 @@
 # 5. Subscribe your page to the Webhooks using verify_token and `https://<your_host>/webhook` as callback URL.
 # 6. Talk to your bot on Messenger!
 
-from __future__ import absolute_import, division, print_function, unicode_literals
 
 import os
 from sys import argv

@@ -1,6 +1,5 @@
 # Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
 
-from __future__ import absolute_import, division, print_function, unicode_literals
 
 import sys
 
@@ -70,7 +69,7 @@ def wikidata_description(celebrity):
         },
     ).json()
     description = rsp["entities"][wikidata_id]["descriptions"]["en"]["value"]
-    return "ooo yes I know %s -- %s" % (celebrity["name"], description)
+    return "ooo yes I know {} -- {}".format(celebrity["name"], description)
 
 
 client = Wit(access_token=access_token)
