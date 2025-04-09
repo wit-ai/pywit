@@ -29,7 +29,8 @@ def req(logger, access_token, meth, path, params, **kwargs):
         "accept": "application/vnd.wit." + WIT_API_VERSION + "+json",
     }
     headers.update(kwargs.pop("headers", {}))
-    rsp = requests.request(meth, full_url, headers=headers, params=params, **kwargs)
+    rsp = requests.request(
+        meth, full_url, headers=headers, params=params, **kwargs)
     if rsp.status_code > 200:
         raise WitError(
             "Wit responded with status: "
@@ -54,7 +55,7 @@ class Wit:
         self.access_token = access_token
         self.logger = logger or logging.getLogger(__name__)
 
-    def message(self, msg, context=None, n=None, verbose=None):
+    def message(self, msg, context=None, n=None, verbose=None, tag=None):
         params = {}
         if n is not None:
             params["n"] = n
@@ -64,6 +65,8 @@ class Wit:
             params["context"] = json.dumps(context)
         if verbose:
             params["verbose"] = verbose
+        if tag:
+            params["tag"] = tag
         resp = req(self.logger, self.access_token, "GET", "/message", params)
         return resp
 
@@ -381,7 +384,8 @@ class Wit:
             params["intents"] = intents
         if verbose:
             params["verbose"] = verbose
-        resp = req(self.logger, self.access_token, "GET", "/utterances", params)
+        resp = req(self.logger, self.access_token,
+                   "GET", "/utterances", params)
         return resp
 
     def delete_utterances(self, utterances, headers=None, verbose=None):
@@ -486,7 +490,8 @@ class Wit:
         if verbose:
             params["verbose"] = True
         endpoint = (
-            "/apps/" + urllib.quote_plus(app_id) + "/tags/" + urllib.quote_plus(tag_id)
+            "/apps/" + urllib.quote_plus(app_id) +
+            "/tags/" + urllib.quote_plus(tag_id)
         )
         resp = req(
             self.logger, self.access_token, "GET", endpoint, params, headers=headers
