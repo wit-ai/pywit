@@ -1,6 +1,5 @@
 # Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
 
-import os
 import sys
 import warnings
 
@@ -29,7 +28,7 @@ else:
 
 if sys.version_info < (3, 0):
     try:
-        from util import json
+        from util import json  # noqa: F401
     except ImportError:
         install_requires.append("simplejson")
 
