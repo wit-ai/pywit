@@ -5,7 +5,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import json
 import logging
 import os
-import urllib
+from urllib.parse import quote
 
 import requests
 from prompt_toolkit import prompt
@@ -47,6 +47,12 @@ def req(logger, access_token, meth, path, params, **kwargs):
 
 
 class Wit:
+    """
+    Main client class for interacting with the Wit.ai API.
+    Provides comprehensive functionality for natural language processing,
+    intent detection, entity management, and conversational AI capabilities.
+    """
+
     access_token = None
     _sessions = {}
 
@@ -157,7 +163,7 @@ class Wit:
         headers = headers or {}
         if verbose:
             params["verbose"] = True
-        endpoint = "/intents/" + urllib.quote_plus(intent_name)
+        endpoint = "/intents/" + quote(intent_name, safe="")
         resp = req(
             self.logger, self.access_token, "GET", endpoint, params, headers=headers
         )
@@ -186,7 +192,7 @@ class Wit:
         headers = headers or {}
         if verbose:
             params["verbose"] = True
-        endpoint = "/entities/" + urllib.quote_plus(entity_name)
+        endpoint = "/entities/" + quote(entity_name, safe="")
         resp = req(
             self.logger, self.access_token, "GET", endpoint, params, headers=headers
         )
@@ -215,7 +221,7 @@ class Wit:
         headers = headers or {}
         if verbose:
             params["verbose"] = True
-        endpoint = "/traits/" + urllib.quote_plus(trait_name)
+        endpoint = "/traits/" + quote(trait_name, safe="")
         resp = req(
             self.logger, self.access_token, "GET", endpoint, params, headers=headers
         )
@@ -231,7 +237,7 @@ class Wit:
         headers = headers or {}
         if verbose:
             params["verbose"] = True
-        endpoint = "/intents/" + urllib.quote_plus(intent_name)
+        endpoint = "/intents/" + quote(intent_name, safe="")
         resp = req(
             self.logger, self.access_token, "DELETE", endpoint, params, headers=headers
         )
@@ -247,7 +253,7 @@ class Wit:
         headers = headers or {}
         if verbose:
             params["verbose"] = True
-        endpoint = "/entities/" + urllib.quote_plus(entity_name)
+        endpoint = "/entities/" + quote(entity_name, safe="")
         resp = req(
             self.logger, self.access_token, "DELETE", endpoint, params, headers=headers
         )
@@ -265,10 +271,7 @@ class Wit:
         if verbose:
             params["verbose"] = True
         endpoint = (
-            "/entities/"
-            + urllib.quote_plus(entity_name)
-            + ":"
-            + urllib.quote_plus(role_name)
+            "/entities/" + quote(entity_name, safe="") + ":" + quote(role_name, safe="")
         )
         resp = req(
             self.logger, self.access_token, "DELETE", endpoint, params, headers=headers
@@ -288,9 +291,9 @@ class Wit:
             params["verbose"] = True
         endpoint = (
             "/entities/"
-            + urllib.quote_plus(entity_name)
+            + quote(entity_name, safe="")
             + "/keywords/"
-            + urllib.quote_plus(keyword_name)
+            + quote(keyword_name, safe="")
         )
         resp = req(
             self.logger, self.access_token, "DELETE", endpoint, params, headers=headers
@@ -312,11 +315,11 @@ class Wit:
             params["verbose"] = True
         endpoint = (
             "/entities/"
-            + urllib.quote_plus(entity_name)
+            + quote(entity_name, safe="")
             + "/keywords/"
-            + urllib.quote_plus(keyword_name)
+            + quote(keyword_name, safe="")
             + "/synonyms/"
-            + urllib.quote_plus(synonym_name)
+            + quote(synonym_name, safe="")
         )
         resp = req(
             self.logger, self.access_token, "DELETE", endpoint, params, headers=headers
@@ -333,7 +336,7 @@ class Wit:
         headers = headers or {}
         if verbose:
             params["verbose"] = True
-        endpoint = "/traits/" + urllib.quote_plus(trait_name)
+        endpoint = "/traits/" + quote(trait_name, safe="")
         resp = req(
             self.logger, self.access_token, "DELETE", endpoint, params, headers=headers
         )
@@ -352,9 +355,9 @@ class Wit:
             params["verbose"] = True
         endpoint = (
             "/traits/"
-            + urllib.quote_plus(trait_name)
+            + quote(trait_name, safe="")
             + "/values/"
-            + urllib.quote_plus(value_name)
+            + quote(value_name, safe="")
         )
         resp = req(
             self.logger, self.access_token, "DELETE", endpoint, params, headers=headers
@@ -381,7 +384,14 @@ class Wit:
             params["intents"] = intents
         if verbose:
             params["verbose"] = verbose
-        resp = req(self.logger, self.access_token, "GET", "/utterances", params)
+        resp = req(
+            self.logger,
+            self.access_token,
+            "GET",
+            "/utterances",
+            params,
+            headers=headers,
+        )
         return resp
 
     def delete_utterances(self, utterances, headers=None, verbose=None):
@@ -423,7 +433,9 @@ class Wit:
             params["offset"] = offset
         if verbose:
             params["verbose"] = verbose
-        resp = req(self.logger, self.access_token, "GET", "/apps", params)
+        resp = req(
+            self.logger, self.access_token, "GET", "/apps", params, headers=headers
+        )
         return resp
 
     def app_info(self, app_id, headers=None, verbose=None):
@@ -436,7 +448,7 @@ class Wit:
         headers = headers or {}
         if verbose:
             params["verbose"] = True
-        endpoint = "/apps/" + urllib.quote_plus(app_id)
+        endpoint = "/apps/" + quote(app_id, safe="")
         resp = req(
             self.logger, self.access_token, "GET", endpoint, params, headers=headers
         )
@@ -452,7 +464,7 @@ class Wit:
         headers = headers or {}
         if verbose:
             params["verbose"] = True
-        endpoint = "/apps/" + urllib.quote_plus(app_id)
+        endpoint = "/apps/" + quote(app_id, safe="")
         resp = req(
             self.logger, self.access_token, "DELETE", endpoint, params, headers=headers
         )
@@ -468,7 +480,7 @@ class Wit:
         headers = headers or {}
         if verbose:
             params["verbose"] = True
-        endpoint = "/apps/" + urllib.quote_plus(app_id) + "/tags"
+        endpoint = "/apps/" + quote(app_id, safe="") + "/tags"
         resp = req(
             self.logger, self.access_token, "GET", endpoint, params, headers=headers
         )
@@ -485,9 +497,7 @@ class Wit:
         headers = headers or {}
         if verbose:
             params["verbose"] = True
-        endpoint = (
-            "/apps/" + urllib.quote_plus(app_id) + "/tags/" + urllib.quote_plus(tag_id)
-        )
+        endpoint = "/apps/" + quote(app_id, safe="") + "/tags/" + quote(tag_id, safe="")
         resp = req(
             self.logger, self.access_token, "GET", endpoint, params, headers=headers
         )
@@ -527,10 +537,7 @@ class Wit:
         params = {}
         headers = headers or {}
         endpoint = (
-            "/apps/"
-            + urllib.quote_plus(app_id)
-            + "/tags/"
-            + urllib.quote_plus(tag_name)
+            "/apps/" + quote(app_id, safe="") + "/tags/" + quote(tag_name, safe="")
         )
         if verbose:
             params["verbose"] = verbose
@@ -568,7 +575,13 @@ class Wit:
         if verbose:
             params["verbose"] = verbose
         resp = req(
-            self.logger, self.access_token, "POST", "/import", params, data=zip_file
+            self.logger,
+            self.access_token,
+            "POST",
+            "/import",
+            params,
+            data=zip_file,
+            headers=headers,
         )
         return resp
 
@@ -643,7 +656,7 @@ class Wit:
         params = {}
         headers = headers or {}
         data = {"name": new_entity_name, "roles": roles}
-        endpoint = "/entities/" + urllib.quote_plus(current_entity_name)
+        endpoint = "/entities/" + quote(current_entity_name, safe="")
         if lookups:
             data["lookups"] = lookups
         if verbose:
@@ -667,7 +680,7 @@ class Wit:
         """
         params = {}
         headers = headers or {}
-        endpoint = "/entities/" + urllib.quote_plus(entity_name) + "/keywords"
+        endpoint = "/entities/" + quote(entity_name, safe="") + "/keywords"
         if verbose:
             params["verbose"] = verbose
         resp = req(
@@ -695,9 +708,9 @@ class Wit:
         headers = headers or {}
         endpoint = (
             "/entities/"
-            + urllib.quote_plus(entity_name)
+            + quote(entity_name, safe="")
             + "/keywords/"
-            + urllib.quote_plus(keyword_name)
+            + quote(keyword_name, safe="")
             + "/synonyms"
         )
         data = {"synonym": synonym}
@@ -748,7 +761,7 @@ class Wit:
         params = {}
         headers = headers or {}
         data = {"value": new_value}
-        endpoint = "/traits/" + urllib.quote_plus(trait_name) + "/values"
+        endpoint = "/traits/" + quote(trait_name, safe="") + "/values"
         if verbose:
             params["verbose"] = verbose
         resp = req(
@@ -835,7 +848,7 @@ class Wit:
         params = {}
         headers = headers or {}
         data = {}
-        endpoint = "/apps/" + urllib.quote_plus(app_id)
+        endpoint = "/apps/" + quote(app_id, safe="")
         if app_name:
             data["name"] = app_name
         if lang:
@@ -880,10 +893,7 @@ class Wit:
         headers = headers or {}
         data = {}
         endpoint = (
-            "/apps/"
-            + urllib.quote_plus(app_id)
-            + "/tags/"
-            + urllib.quote_plus(tag_name)
+            "/apps/" + quote(app_id, safe="") + "/tags/" + quote(tag_name, safe="")
         )
         if new_name:
             data["tag"] = new_name
