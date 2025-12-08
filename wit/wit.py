@@ -58,7 +58,7 @@ class Wit:
     access_token = None
     _sessions = {}
 
-    def __init__(self, access_token, logger=None):
+    def __init__(self, access_token, logger=None) -> None:
         self.access_token = access_token
         self.logger = logger or logging.getLogger(__name__)
 
@@ -102,7 +102,7 @@ class Wit:
         )
         return resp
 
-    def interactive(self, handle_message=None, context=None):
+    def interactive(self, handle_message=None, context=None) -> None:
         """Runs interactive command line chat between user and bot. Runs
         indefinitely until EOF is entered to the prompt.
 
