@@ -75,7 +75,7 @@ class Wit:
         resp = req(self.logger, self.access_token, "GET", "/message", params)
         return resp
 
-    def speech(self, audio_file, headers=None, verbose=None):
+    def speech(self, audio_file, headers=None, context=None, verbose=None):
         """Sends an audio file to the /speech API.
         Uses the streaming feature of requests (see `req`), so opening the file
         in binary mode is strongly recommended (see
@@ -89,6 +89,8 @@ class Wit:
         """
         params = {}
         headers = headers or {}
+        if context:
+            params["context"] = json.dumps(context)
         if verbose:
             params["verbose"] = True
         resp = req(
