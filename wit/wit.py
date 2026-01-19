@@ -1,6 +1,6 @@
 # Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
 
-# pyre-unsafe
+# pyre-strict
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 
@@ -13,7 +13,9 @@ import requests
 from prompt_toolkit import prompt
 from prompt_toolkit.history import InMemoryHistory
 
+# pyre-fixme[5]: Global expression must be annotated.
 WIT_API_HOST = os.getenv("WIT_URL", "https://api.wit.ai")
+# pyre-fixme[5]: Global expression must be annotated.
 WIT_API_VERSION = os.getenv("WIT_API_VERSION", "20200513")
 INTERACTIVE_PROMPT = "> "
 LEARN_MORE = "Learn more at https://wit.ai/docs/quickstart"
@@ -23,6 +25,8 @@ class WitError(Exception):
     pass
 
 
+# pyre-fixme[3]: Return type must be annotated.
+# pyre-fixme[2]: Parameter must be annotated.
 def req(logger, access_token, meth, path, params, **kwargs):
     full_url = WIT_API_HOST + path
     logger.debug("%s %s %s", meth, full_url, params)
@@ -55,13 +59,19 @@ class Wit:
     intent detection, entity management, and conversational AI capabilities.
     """
 
+    # pyre-fixme[4]: Attribute must be annotated.
     access_token = None
+    # pyre-fixme[4]: Attribute must be annotated.
     _sessions = {}
 
+    # pyre-fixme[2]: Parameter must be annotated.
     def __init__(self, access_token, logger=None) -> None:
         self.access_token = access_token
+        # pyre-fixme[4]: Attribute must be annotated.
         self.logger = logger or logging.getLogger(__name__)
 
+    # pyre-fixme[3]: Return type must be annotated.
+    # pyre-fixme[2]: Parameter must be annotated.
     def message(self, msg, context=None, n=None, verbose=None):
         params = {}
         if n is not None:
@@ -75,6 +85,8 @@ class Wit:
         resp = req(self.logger, self.access_token, "GET", "/message", params)
         return resp
 
+    # pyre-fixme[3]: Return type must be annotated.
+    # pyre-fixme[2]: Parameter must be annotated.
     def speech(self, audio_file, headers=None, verbose=None):
         """Sends an audio file to the /speech API.
         Uses the streaming feature of requests (see `req`), so opening the file
@@ -102,6 +114,7 @@ class Wit:
         )
         return resp
 
+    # pyre-fixme[2]: Parameter must be annotated.
     def interactive(self, handle_message=None, context=None) -> None:
         """Runs interactive command line chat between user and bot. Runs
         indefinitely until EOF is entered to the prompt.
@@ -125,6 +138,8 @@ class Wit:
             else:
                 print(handle_message(self.message(message, context)))
 
+    # pyre-fixme[3]: Return type must be annotated.
+    # pyre-fixme[2]: Parameter must be annotated.
     def intent_list(self, headers=None, verbose=None):
         """
         Returns names of all intents associated with your app.
@@ -138,6 +153,8 @@ class Wit:
         )
         return resp
 
+    # pyre-fixme[3]: Return type must be annotated.
+    # pyre-fixme[2]: Parameter must be annotated.
     def detect_language(self, msg, n=None, headers=None, verbose=None):
         """
         Returns the list of the top detected locales for the text message.
@@ -155,6 +172,8 @@ class Wit:
         )
         return resp
 
+    # pyre-fixme[3]: Return type must be annotated.
+    # pyre-fixme[2]: Parameter must be annotated.
     def intent_info(self, intent_name, headers=None, verbose=None):
         """
         Returns all available information about an intent.
@@ -171,6 +190,8 @@ class Wit:
         )
         return resp
 
+    # pyre-fixme[3]: Return type must be annotated.
+    # pyre-fixme[2]: Parameter must be annotated.
     def entity_list(self, headers=None, verbose=None):
         """
         Returns list of all entities associated with your app.
@@ -184,6 +205,8 @@ class Wit:
         )
         return resp
 
+    # pyre-fixme[3]: Return type must be annotated.
+    # pyre-fixme[2]: Parameter must be annotated.
     def entity_info(self, entity_name, headers=None, verbose=None):
         """
         Returns all available information about an entity.
@@ -200,6 +223,8 @@ class Wit:
         )
         return resp
 
+    # pyre-fixme[3]: Return type must be annotated.
+    # pyre-fixme[2]: Parameter must be annotated.
     def trait_list(self, headers=None, verbose=None):
         """
         Returns list of all traits associated with your app.
@@ -213,6 +238,8 @@ class Wit:
         )
         return resp
 
+    # pyre-fixme[3]: Return type must be annotated.
+    # pyre-fixme[2]: Parameter must be annotated.
     def trait_info(self, trait_name, headers=None, verbose=None):
         """
         Returns all available information about a trait.
@@ -229,6 +256,8 @@ class Wit:
         )
         return resp
 
+    # pyre-fixme[3]: Return type must be annotated.
+    # pyre-fixme[2]: Parameter must be annotated.
     def delete_intent(self, intent_name, headers=None, verbose=None):
         """
         Delete an intent associated with your app.
@@ -245,6 +274,8 @@ class Wit:
         )
         return resp
 
+    # pyre-fixme[3]: Return type must be annotated.
+    # pyre-fixme[2]: Parameter must be annotated.
     def delete_entity(self, entity_name, headers=None, verbose=None):
         """
         Delete an entity associated with your app.
@@ -261,6 +292,8 @@ class Wit:
         )
         return resp
 
+    # pyre-fixme[3]: Return type must be annotated.
+    # pyre-fixme[2]: Parameter must be annotated.
     def delete_role(self, entity_name, role_name, headers=None, verbose=None):
         """
         Deletes a role associated with the entity.
@@ -280,6 +313,8 @@ class Wit:
         )
         return resp
 
+    # pyre-fixme[3]: Return type must be annotated.
+    # pyre-fixme[2]: Parameter must be annotated.
     def delete_keyword(self, entity_name, keyword_name, headers=None, verbose=None):
         """
         Deletes a keyword associated with the entity.
@@ -302,8 +337,19 @@ class Wit:
         )
         return resp
 
+    # pyre-fixme[3]: Return type must be annotated.
     def delete_synonym(
-        self, entity_name, keyword_name, synonym_name, headers=None, verbose=None
+        self,
+        # pyre-fixme[2]: Parameter must be annotated.
+        entity_name,
+        # pyre-fixme[2]: Parameter must be annotated.
+        keyword_name,
+        # pyre-fixme[2]: Parameter must be annotated.
+        synonym_name,
+        # pyre-fixme[2]: Parameter must be annotated.
+        headers=None,
+        # pyre-fixme[2]: Parameter must be annotated.
+        verbose=None,
     ):
         """
         Delete a synonym of the keyword of the entity.
@@ -328,6 +374,8 @@ class Wit:
         )
         return resp
 
+    # pyre-fixme[3]: Return type must be annotated.
+    # pyre-fixme[2]: Parameter must be annotated.
     def delete_trait(self, trait_name, headers=None, verbose=None):
         """
         Delete a trait associated with your app.
@@ -344,6 +392,8 @@ class Wit:
         )
         return resp
 
+    # pyre-fixme[3]: Return type must be annotated.
+    # pyre-fixme[2]: Parameter must be annotated.
     def delete_trait_value(self, trait_name, value_name, headers=None, verbose=None):
         """
         Deletes a value associated with the trait.
@@ -366,8 +416,19 @@ class Wit:
         )
         return resp
 
+    # pyre-fixme[3]: Return type must be annotated.
     def get_utterances(
-        self, limit, offset=None, intents=None, headers=None, verbose=None
+        self,
+        # pyre-fixme[2]: Parameter must be annotated.
+        limit,
+        # pyre-fixme[2]: Parameter must be annotated.
+        offset=None,
+        # pyre-fixme[2]: Parameter must be annotated.
+        intents=None,
+        # pyre-fixme[2]: Parameter must be annotated.
+        headers=None,
+        # pyre-fixme[2]: Parameter must be annotated.
+        verbose=None,
     ):
         """
         Returns a JSON array of utterances.
@@ -396,6 +457,8 @@ class Wit:
         )
         return resp
 
+    # pyre-fixme[3]: Return type must be annotated.
+    # pyre-fixme[2]: Parameter must be annotated.
     def delete_utterances(self, utterances, headers=None, verbose=None):
         """
         Delete utterances from your app.
@@ -420,6 +483,8 @@ class Wit:
         )
         return resp
 
+    # pyre-fixme[3]: Return type must be annotated.
+    # pyre-fixme[2]: Parameter must be annotated.
     def get_apps(self, limit, offset=None, headers=None, verbose=None):
         """
         Returns an array of all your apps.
@@ -440,6 +505,8 @@ class Wit:
         )
         return resp
 
+    # pyre-fixme[3]: Return type must be annotated.
+    # pyre-fixme[2]: Parameter must be annotated.
     def app_info(self, app_id, headers=None, verbose=None):
         """
         Returns an object representation of the specified app.
@@ -456,6 +523,8 @@ class Wit:
         )
         return resp
 
+    # pyre-fixme[3]: Return type must be annotated.
+    # pyre-fixme[2]: Parameter must be annotated.
     def delete_app(self, app_id, headers=None, verbose=None):
         """
         Returns an object representation of the specified app.
@@ -472,6 +541,8 @@ class Wit:
         )
         return resp
 
+    # pyre-fixme[3]: Return type must be annotated.
+    # pyre-fixme[2]: Parameter must be annotated.
     def app_versions(self, app_id, headers=None, verbose=None):
         """
         Returns an array of all tag groups for an app.
@@ -488,6 +559,8 @@ class Wit:
         )
         return resp
 
+    # pyre-fixme[3]: Return type must be annotated.
+    # pyre-fixme[2]: Parameter must be annotated.
     def app_version_info(self, app_id, tag_id, headers=None, verbose=None):
         """
         Returns an object representation of the specified app.
@@ -505,6 +578,8 @@ class Wit:
         )
         return resp
 
+    # pyre-fixme[3]: Return type must be annotated.
+    # pyre-fixme[2]: Parameter must be annotated.
     def create_app_version(self, app_id, tag_name, headers=None, verbose=None):
         """
         Create a new version of your app.
@@ -529,6 +604,8 @@ class Wit:
         )
         return resp
 
+    # pyre-fixme[3]: Return type must be annotated.
+    # pyre-fixme[2]: Parameter must be annotated.
     def delete_app_version(self, app_id, tag_name, headers=None, verbose=None):
         """
         Delete a specific version of your app.
@@ -548,6 +625,8 @@ class Wit:
         )
         return resp
 
+    # pyre-fixme[3]: Return type must be annotated.
+    # pyre-fixme[2]: Parameter must be annotated.
     def export(self, headers=None, verbose=None):
         """
         Get a URL where you can download a ZIP file containing all of your app data.
@@ -561,6 +640,8 @@ class Wit:
         )
         return resp
 
+    # pyre-fixme[3]: Return type must be annotated.
+    # pyre-fixme[2]: Parameter must be annotated.
     def import_app(self, name, private, zip_file, headers=None, verbose=None):
         """
         Create a new app with all the app data from the exported app.
@@ -587,6 +668,8 @@ class Wit:
         )
         return resp
 
+    # pyre-fixme[3]: Return type must be annotated.
+    # pyre-fixme[2]: Parameter must be annotated.
     def create_intent(self, intent_name, headers=None, verbose=None):
         """
         Creates a new intent with the given attributes.
@@ -610,8 +693,19 @@ class Wit:
         )
         return resp
 
+    # pyre-fixme[3]: Return type must be annotated.
     def create_entity(
-        self, entity_name, roles, lookups=None, headers=None, verbose=None
+        self,
+        # pyre-fixme[2]: Parameter must be annotated.
+        entity_name,
+        # pyre-fixme[2]: Parameter must be annotated.
+        roles,
+        # pyre-fixme[2]: Parameter must be annotated.
+        lookups=None,
+        # pyre-fixme[2]: Parameter must be annotated.
+        headers=None,
+        # pyre-fixme[2]: Parameter must be annotated.
+        verbose=None,
     ):
         """
         Creates a new intent with the given attributes.
@@ -639,13 +733,20 @@ class Wit:
         )
         return resp
 
+    # pyre-fixme[3]: Return type must be annotated.
     def update_entity(
         self,
+        # pyre-fixme[2]: Parameter must be annotated.
         current_entity_name,
+        # pyre-fixme[2]: Parameter must be annotated.
         new_entity_name,
+        # pyre-fixme[2]: Parameter must be annotated.
         roles,
+        # pyre-fixme[2]: Parameter must be annotated.
         lookups=None,
+        # pyre-fixme[2]: Parameter must be annotated.
         headers=None,
+        # pyre-fixme[2]: Parameter must be annotated.
         verbose=None,
     ):
         """
@@ -674,6 +775,8 @@ class Wit:
         )
         return resp
 
+    # pyre-fixme[3]: Return type must be annotated.
+    # pyre-fixme[2]: Parameter must be annotated.
     def add_keyword_value(self, entity_name, data, headers=None, verbose=None):
         """
         Add a possible value into the list of keywords for the keywords entity.
@@ -696,8 +799,19 @@ class Wit:
         )
         return resp
 
+    # pyre-fixme[3]: Return type must be annotated.
     def create_synonym(
-        self, entity_name, keyword_name, synonym, headers=None, verbose=None
+        self,
+        # pyre-fixme[2]: Parameter must be annotated.
+        entity_name,
+        # pyre-fixme[2]: Parameter must be annotated.
+        keyword_name,
+        # pyre-fixme[2]: Parameter must be annotated.
+        synonym,
+        # pyre-fixme[2]: Parameter must be annotated.
+        headers=None,
+        # pyre-fixme[2]: Parameter must be annotated.
+        verbose=None,
     ):
         """
         Create a new synonym of the canonical value of the keywords entity.
@@ -729,6 +843,8 @@ class Wit:
         )
         return resp
 
+    # pyre-fixme[3]: Return type must be annotated.
+    # pyre-fixme[2]: Parameter must be annotated.
     def create_trait(self, trait_name, values, headers=None, verbose=None):
         """
         Creates a new trait with the given attributes.
@@ -753,6 +869,8 @@ class Wit:
         )
         return resp
 
+    # pyre-fixme[3]: Return type must be annotated.
+    # pyre-fixme[2]: Parameter must be annotated.
     def create_trait_value(self, trait_name, new_value, headers=None, verbose=None):
         """
         Creates a new trait with the given attributes.
@@ -777,6 +895,8 @@ class Wit:
         )
         return resp
 
+    # pyre-fixme[3]: Return type must be annotated.
+    # pyre-fixme[2]: Parameter must be annotated.
     def train(self, data, headers=None, verbose=None):
         """
         Train your utterances.
@@ -799,8 +919,21 @@ class Wit:
         )
         return resp
 
+    # pyre-fixme[3]: Return type must be annotated.
     def create_app(
-        self, app_name, lang, private, timezone=None, headers=None, verbose=None
+        self,
+        # pyre-fixme[2]: Parameter must be annotated.
+        app_name,
+        # pyre-fixme[2]: Parameter must be annotated.
+        lang,
+        # pyre-fixme[2]: Parameter must be annotated.
+        private,
+        # pyre-fixme[2]: Parameter must be annotated.
+        timezone=None,
+        # pyre-fixme[2]: Parameter must be annotated.
+        headers=None,
+        # pyre-fixme[2]: Parameter must be annotated.
+        verbose=None,
     ):
         """
         Creates a new app for an existing user.
@@ -829,14 +962,22 @@ class Wit:
         )
         return resp
 
+    # pyre-fixme[3]: Return type must be annotated.
     def update_app(
         self,
+        # pyre-fixme[2]: Parameter must be annotated.
         app_id,
+        # pyre-fixme[2]: Parameter must be annotated.
         app_name=None,
+        # pyre-fixme[2]: Parameter must be annotated.
         lang=None,
+        # pyre-fixme[2]: Parameter must be annotated.
         private=None,
+        # pyre-fixme[2]: Parameter must be annotated.
         timezone=None,
+        # pyre-fixme[2]: Parameter must be annotated.
         headers=None,
+        # pyre-fixme[2]: Parameter must be annotated.
         verbose=None,
     ):
         """
@@ -872,14 +1013,22 @@ class Wit:
         )
         return resp
 
+    # pyre-fixme[3]: Return type must be annotated.
     def update_app_version(
         self,
+        # pyre-fixme[2]: Parameter must be annotated.
         app_id,
+        # pyre-fixme[2]: Parameter must be annotated.
         tag_name,
+        # pyre-fixme[2]: Parameter must be annotated.
         new_name=None,
+        # pyre-fixme[2]: Parameter must be annotated.
         desc=None,
+        # pyre-fixme[2]: Parameter must be annotated.
         move_to=None,
+        # pyre-fixme[2]: Parameter must be annotated.
         headers=None,
+        # pyre-fixme[2]: Parameter must be annotated.
         verbose=None,
     ):
         """
