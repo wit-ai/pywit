@@ -7,6 +7,8 @@ import sys
 
 from .wit import Wit
 
+__all__ = ["Wit"]
+
 # Set default logging for the module. Client applications can use a custom
 # logging config to override defaults specified here
 logging.getLogger(__name__).setLevel(logging.INFO)
