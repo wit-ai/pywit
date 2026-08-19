@@ -13,9 +13,7 @@ import requests
 from prompt_toolkit import prompt
 from prompt_toolkit.history import InMemoryHistory
 
-# pyre-fixme[5]: Global expression must be annotated.
 WIT_API_HOST = os.getenv("WIT_URL", "https://api.wit.ai")
-# pyre-fixme[5]: Global expression must be annotated.
 WIT_API_VERSION = os.getenv("WIT_API_VERSION", "20200513")
 INTERACTIVE_PROMPT = "> "
 LEARN_MORE = "Learn more at https://wit.ai/docs/quickstart"
@@ -67,7 +65,6 @@ class Wit:
     # pyre-fixme[2]: Parameter must be annotated.
     def __init__(self, access_token, logger=None) -> None:
         self.access_token = access_token
-        # pyre-fixme[4]: Attribute must be annotated.
         self.logger = logger or logging.getLogger(__name__)
 
     # pyre-fixme[3]: Return type must be annotated.
