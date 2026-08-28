@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# pyre-strict
 # Copyright (c) Meta Platforms, Inc. and affiliates.
 
 import json
